@@ -1,0 +1,186 @@
+site_name: Security Fieldbook
+site_description: A practical cybersecurity fieldbook with pentesting notes, lab writeups, tools, and hands-on learning.
+site_author: Antonie Grigore
+
+theme:
+  name: material
+
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - navigation.top
+    - navigation.footer
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - content.code.select
+    - content.tabs.link
+    - toc.follow
+
+  palette:
+    - scheme: slate
+      primary: black
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+    - scheme: default
+      primary: brown
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+
+  font:
+    text: Inter
+    code: JetBrains Mono
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - def_list
+  - toc:
+      toc_depth: 4
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra_css:
+  - stylesheets/extra.css
+
+nav:
+  - Home: index.md
+  - About: about.md
+  - Projects: projects.md
+  - Learning Path: learning-path.md
+
+  - Foundations:
+      - Overview: foundations/index.md
+      - Networking:
+          - Overview: foundations/networking/index.md
+          - Network Fundamentals: foundations/networking/network-fundamentals.md
+          - Protocols: foundations/networking/protocols.md
+          - Subnetting: foundations/networking/subnetting.md
+          - Cryptography: foundations/networking/cryptography.md
+      - Operating Systems:
+          - Overview: foundations/operating-systems/index.md
+          - Linux:
+              - Overview: foundations/operating-systems/linux/index.md
+              - Structure and Workflow: foundations/operating-systems/linux/structure-and-workflow.md
+              - System Management: foundations/operating-systems/linux/system-management.md
+              - Bash Scripting: foundations/operating-systems/linux/bash-scripting.md
+          - Windows:
+              - Overview: foundations/operating-systems/windows/index.md
+              - Fundamentals: foundations/operating-systems/windows/fundamentals.md
+              - Command Line: foundations/operating-systems/windows/command-line.md
+              - Active Directory: foundations/operating-systems/windows/active-directory.md
+      - Web:
+          - Overview: foundations/web/index.md
+          - How the Web Works: foundations/web/how-the-web-works.md
+          - JavaScript Essentials: foundations/web/javascript-essentials.md
+          - SQL Fundamentals: foundations/web/sql-fundamentals.md
+
+  - Offensive Security:
+      - Overview: offensive/index.md
+      - Methodology: offensive/methodology.md
+      - Reconnaissance:
+          - Overview: offensive/reconnaissance/index.md
+          - Nmap: offensive/reconnaissance/nmap.md
+          - Footprinting: offensive/reconnaissance/footprinting.md
+          - Content Discovery: offensive/reconnaissance/content-discovery.md
+      - Exploitation:
+          - Overview: offensive/exploitation/index.md
+          - Web:
+              - Overview: offensive/exploitation/web/index.md
+              - SQL Injection: offensive/exploitation/web/sql-injection.md
+              - Path Traversal: offensive/exploitation/web/path-traversal.md
+              - File Upload: offensive/exploitation/web/file-upload.md
+              - SSRF: offensive/exploitation/web/ssrf.md
+              - Access Control: offensive/exploitation/web/access-control.md
+              - Front-End Vulnerabilities: offensive/exploitation/web/front-end-vulnerabilities.md
+          - Targets:
+              - Overview: offensive/exploitation/targets/index.md
+              - Linux: offensive/exploitation/targets/linux.md
+              - Windows: offensive/exploitation/targets/windows.md
+              - WordPress: offensive/exploitation/targets/wordpress.md
+      - Tools:
+          - Overview: offensive/tools/index.md
+          - Burp Suite: offensive/tools/burp-suite.md
+          - Metasploit: offensive/tools/metasploit.md
+          - Shells: offensive/tools/shells.md
+          - Hydra: offensive/tools/hydra.md
+          - SQLMap: offensive/tools/sqlmap.md
+          - Gobuster: offensive/tools/gobuster.md
+
+  - Defensive Security:
+      - Overview: defensive/index.md
+      - Frameworks:
+          - Overview: defensive/frameworks/index.md
+          - MITRE ATT&CK: defensive/frameworks/mitre-attack.md
+          - Cyber Kill Chain: defensive/frameworks/cyber-kill-chain.md
+          - Unified Kill Chain: defensive/frameworks/unified-kill-chain.md
+          - Diamond Model: defensive/frameworks/diamond-model.md
+      - Monitoring:
+          - Overview: defensive/monitoring/index.md
+          - Windows Event Logging: defensive/monitoring/windows-event-logging.md
+          - Log Sources: defensive/monitoring/log-sources.md
+          - SIEM Fundamentals: defensive/monitoring/siem-fundamentals.md
+          - Splunk: defensive/monitoring/splunk.md
+          - Snort: defensive/monitoring/snort.md
+          - YARA and Sigma: defensive/monitoring/yara-and-sigma.md
+      - Traffic Analysis:
+          - Overview: defensive/traffic-analysis/index.md
+          - Wireshark: defensive/traffic-analysis/wireshark.md
+          - Tcpdump: defensive/traffic-analysis/tcpdump.md
+      - Threat Detection:
+          - Overview: defensive/threat-detection/index.md
+          - Windows Attacks and Defense: defensive/threat-detection/windows-attacks-and-defense.md
+          - Windows Security Monitoring: defensive/threat-detection/windows-security-monitoring.md
+          - Linux Security Monitoring: defensive/threat-detection/linux-security-monitoring.md
+          - Web Security Monitoring: defensive/threat-detection/web-security-monitoring.md
+          - Malware Analysis: defensive/threat-detection/malware-analysis.md
+          - JavaScript Deobfuscation: defensive/threat-detection/javascript-deobfuscation.md
+      - Incident Response:
+          - Overview: defensive/incident-response/index.md
+          - Incident Handling Process: defensive/incident-response/incident-handling-process.md
+          - Digital Forensics: defensive/incident-response/digital-forensics.md
+          - Data Exfiltration Detection: defensive/incident-response/data-exfiltration-detection.md
+      - Security Solutions:
+          - Overview: defensive/security-solutions/index.md
+          - Firewall Fundamentals: defensive/security-solutions/firewall-fundamentals.md
+          - IDS/IPS: defensive/security-solutions/ids-ips.md
+
+  - Labs:
+      - Overview: labs/index.md
+      - Home Lab: labs/home-lab/index.md
+      - Active Directory Lab: labs/active-directory-lab/index.md
+      - Web App Lab: labs/web-app-lab/index.md
+      - SOC Lab: labs/soc-lab/index.md
+
+  - Writeups:
+      - Overview: writeups/index.md
+      - HTB: writeups/htb/index.md
+      - THM: writeups/thm/index.md
+      - CTF: writeups/ctf/index.md
+      - Template: writeups/template.md
+
+  - Cheatsheets:
+      - Overview: cheatsheets/index.md
+      - Nmap: cheatsheets/nmap.md
+      - Burp Suite: cheatsheets/burp-suite.md
+      - Metasploit: cheatsheets/metasploit.md
+      - Hydra: cheatsheets/hydra.md
+      - SQLMap: cheatsheets/sqlmap.md
+      - Gobuster: cheatsheets/gobuster.md
+      - Shells: cheatsheets/shells.md
