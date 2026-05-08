@@ -1,0 +1,944 @@
+:root {
+  --md-primary-fg-color: #12100d;
+  --md-primary-fg-color--light: #1d1712;
+  --md-primary-fg-color--dark: #080605;
+  --md-accent-fg-color: #d39a2e;
+}
+
+/* =========================
+   DARK MODE: Fieldbook look
+   ========================= */
+
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color: #0f0b08;
+  --md-default-bg-color--light: #15100c;
+  --md-default-bg-color--lighter: #1d1510;
+
+  --md-default-fg-color: #dfd2bb;
+  --md-default-fg-color--light: #b9aa91;
+  --md-default-fg-color--lighter: #8f806b;
+
+  --md-typeset-color: #dfd2bb;
+  --md-typeset-a-color: #d8a13a;
+
+  --md-code-bg-color: #1a130f;
+  --md-code-fg-color: #f0dfc2;
+
+  --md-footer-bg-color: #0a0705;
+  --md-footer-bg-color--dark: #070504;
+}
+
+/* =========================
+   LIGHT MODE: warm paper
+   ========================= */
+
+[data-md-color-scheme="default"] {
+  --md-default-bg-color: #f3eadb;
+  --md-default-bg-color--light: #fff8ed;
+  --md-default-bg-color--lighter: #fffaf2;
+
+  --md-default-fg-color: #241b14;
+  --md-default-fg-color--light: #4c3a2a;
+  --md-default-fg-color--lighter: #80694e;
+
+  --md-typeset-color: #241b14;
+  --md-typeset-a-color: #9d6816;
+
+  --md-code-bg-color: #eadbc4;
+  --md-code-fg-color: #25180f;
+}
+
+/* =========================
+   Header / tabs
+   ========================= */
+
+.md-header,
+.md-tabs {
+  background: #100c09;
+  color: #f1cd7a;
+  border-bottom: 1px solid #3a291c;
+  box-shadow: none;
+}
+
+.md-header__title {
+  color: #f1cd7a;
+  font-weight: 700;
+}
+
+.md-tabs__link {
+  color: #bda66f;
+  opacity: 1;
+  font-weight: 600;
+}
+
+.md-tabs__link--active,
+.md-tabs__link:hover {
+  color: #f1cd7a;
+}
+
+/* Search */
+.md-search__form {
+  background-color: #211711;
+  border: 1px solid #3d2a1b;
+  border-radius: 4px;
+}
+
+.md-search__input {
+  color: #f0dfc2;
+}
+
+/* Theme toggle */
+.md-header__button {
+  color: #f1cd7a;
+}
+
+/* =========================
+   Layout
+   ========================= */
+
+.md-grid {
+  max-width: 1340px;
+}
+
+.md-main__inner {
+  margin-top: 1.2rem;
+}
+
+.md-content {
+  max-width: 860px;
+}
+
+.md-content__inner {
+  padding-top: 1rem;
+}
+
+/* =========================
+   Typography
+   ========================= */
+
+.md-typeset {
+  font-size: 0.78rem;
+  line-height: 1.78;
+  font-weight: 400;
+}
+
+.md-typeset p,
+.md-typeset li {
+  font-weight: 400;
+}
+
+.md-typeset h1 {
+  color: #d6a23a;
+  font-size: 2rem;
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  margin-bottom: 1.8rem;
+}
+
+.md-typeset h2 {
+  color: #d6a23a;
+  font-size: 1.45rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin-top: 2.4rem;
+}
+
+.md-typeset h3 {
+  color: #c99636;
+  font-weight: 650;
+}
+
+/* Links */
+.md-typeset a {
+  color: #d8a13a;
+  text-decoration: none;
+}
+
+.md-typeset a:hover {
+  color: #f2c46d;
+  text-decoration: underline;
+}
+
+/* Lists */
+.md-typeset ul li::marker {
+  color: #d6a23a;
+}
+
+/* Horizontal rules */
+.md-typeset hr {
+  border-bottom: 1px solid #4a3523;
+}
+
+/* =========================
+   Navigation sidebars
+   ========================= */
+
+.md-sidebar {
+  color: #b9aa91;
+}
+
+.md-nav {
+  font-size: 0.72rem;
+}
+
+.md-nav__title {
+  color: #d6a23a;
+  font-weight: 700;
+  background: transparent !important;
+}
+
+.md-nav__link {
+  color: #b9aa91;
+}
+
+.md-nav__link:hover {
+  color: #f1cd7a;
+}
+
+.md-nav__item .md-nav__link--active {
+  color: #f1cd7a;
+  font-weight: 700;
+}
+
+/* Table of contents */
+.md-nav--secondary .md-nav__title {
+  color: #c49a55;
+}
+
+.md-nav--secondary .md-nav__link {
+  color: #a99a83;
+}
+
+.md-nav--secondary .md-nav__link:hover {
+  color: #f1cd7a;
+}
+
+/* =========================
+   Code
+   ========================= */
+
+.md-typeset code {
+  background-color: #211812;
+  color: #f0d08a;
+  border: 1px solid #342416;
+  border-radius: 5px;
+  padding: 0.12em 0.35em;
+  font-size: 0.85em;
+}
+
+.md-typeset pre > code {
+  background-color: #1a130f;
+  color: #f0dfc2;
+  border: 1px solid #3a2a1c;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+/* Code block container */
+.md-typeset .highlight {
+  background-color: #1a130f;
+  border-radius: 8px;
+}
+
+/* =========================
+   Tables / admonitions
+   ========================= */
+
+.md-typeset table:not([class]) {
+  background-color: #15100c;
+  border: 1px solid #3a2a1c;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: #211711;
+  color: #f1cd7a;
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  background-color: #17110d;
+  border-color: #c7922b;
+  border-radius: 8px;
+}
+
+/* =========================
+   Footer
+   ========================= */
+
+.md-footer {
+  background-color: #0a0705;
+}
+
+/* Task list checkboxes - clearer checked vs unchecked states */
+.md-typeset .task-list-item {
+  list-style-type: none;
+}
+
+.md-typeset .task-list-control {
+  gap: 0.45rem;
+}
+
+.md-typeset .task-list-indicator::before {
+  background-color: transparent;
+  border: 2px solid #7b6a52;
+  border-radius: 50%;
+  box-shadow: none;
+}
+
+.md-typeset .task-list-control [type="checkbox"]:checked + .task-list-indicator::before {
+  background-color: #1fd982;
+  border-color: #1fd982;
+}
+
+.md-typeset .task-list-control [type="checkbox"]:not(:checked) + .task-list-indicator::before {
+  background-color: transparent;
+  border-color: #7b6a52;
+}
+
+.md-typeset .task-list-control [type="checkbox"]:not(:checked) + .task-list-indicator {
+  color: transparent;
+}
+
+/* =========================
+   Compact fieldbook layout
+   ========================= */
+
+/* Main readable area */
+.md-content {
+  max-width: 920px;
+}
+
+/* Smaller, denser body text */
+.md-typeset {
+  font-size: 0.72rem;
+  line-height: 1.62;
+}
+
+/* Paragraph spacing */
+.md-typeset p {
+  margin-top: 0.65em;
+  margin-bottom: 0.65em;
+}
+
+/* More compact headings */
+.md-typeset h1 {
+  font-size: 1.65rem;
+  margin-top: 0;
+  margin-bottom: 1.1rem;
+}
+
+.md-typeset h2 {
+  font-size: 1.18rem;
+  margin-top: 1.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.md-typeset h3 {
+  font-size: 0.95rem;
+  margin-top: 1.4rem;
+  margin-bottom: 0.55rem;
+}
+
+.md-typeset h4 {
+  font-size: 0.8rem;
+  margin-top: 1.1rem;
+  margin-bottom: 0.45rem;
+}
+
+/* Tighter lists */
+.md-typeset ul,
+.md-typeset ol {
+  margin-top: 0.45em;
+  margin-bottom: 0.75em;
+}
+
+.md-typeset li {
+  margin-bottom: 0.25em;
+}
+
+/* Tighter horizontal rules */
+.md-typeset hr {
+  margin: 1.4rem 0;
+}
+
+/* Smaller code blocks */
+.md-typeset pre > code {
+  font-size: 0.68rem;
+  line-height: 1.5;
+  padding: 0.75rem;
+}
+
+.md-typeset code {
+  font-size: 0.76em;
+}
+
+/* More compact tables */
+.md-typeset table:not([class]) {
+  font-size: 0.68rem;
+}
+
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  padding: 0.55em 0.8em;
+}
+
+/* More compact admonitions/details */
+.md-typeset .admonition,
+.md-typeset details {
+  font-size: 0.7rem;
+  margin: 0.9rem 0;
+}
+
+/* Compact side navigation and TOC */
+.md-nav {
+  font-size: 0.68rem;
+}
+
+.md-nav__link {
+  margin-top: 0.35em;
+}
+
+/* Less vertical whitespace under header */
+.md-main__inner {
+  margin-top: 0.8rem;
+}
+
+
+/* =========================
+   Light mode header override
+   ========================= */
+
+[data-md-color-scheme="default"] .md-header,
+[data-md-color-scheme="default"] .md-tabs {
+  background: #eadcc8;
+  color: #4a3420;
+  border-bottom: 1px solid #d2b98f;
+}
+
+[data-md-color-scheme="default"] .md-header__title,
+[data-md-color-scheme="default"] .md-header__button,
+[data-md-color-scheme="default"] .md-tabs__link {
+  color: #4a3420;
+}
+
+[data-md-color-scheme="default"] .md-tabs__link--active,
+[data-md-color-scheme="default"] .md-tabs__link:hover {
+  color: #a96f12;
+}
+
+[data-md-color-scheme="default"] .md-search__form {
+  background-color: #f7eedf;
+  border: 1px solid #d0b98e;
+}
+
+[data-md-color-scheme="default"] .md-search__input {
+  color: #2b2118;
+}
+
+[data-md-color-scheme="default"] .md-search__input::placeholder {
+  color: #7d6a52;
+}
+
+
+/* =========================
+   Right-side table of contents
+   ========================= */
+
+/* Make the whole right sidebar stable */
+.md-sidebar--secondary {
+  height: calc(100vh - 4rem);
+}
+
+/* Keep the TOC title visible without overlapping links */
+.md-sidebar--secondary .md-nav__title {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #0f0b08 !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #332418;
+  padding-top: 0.35rem;
+  padding-bottom: 0.45rem;
+  margin-bottom: 0.45rem;
+}
+
+/* Make only the scroll area scroll */
+.md-sidebar--secondary .md-sidebar__scrollwrap {
+  max-height: calc(100vh - 5rem);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #d6a23a transparent;
+}
+
+/* WebKit scrollbar */
+.md-sidebar--secondary .md-sidebar__scrollwrap::-webkit-scrollbar {
+  width: 5px;
+}
+
+.md-sidebar--secondary .md-sidebar__scrollwrap::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.md-sidebar--secondary .md-sidebar__scrollwrap::-webkit-scrollbar-thumb {
+  background-color: #d6a23a;
+  border-radius: 999px;
+}
+
+.md-sidebar--secondary .md-sidebar__scrollwrap::-webkit-scrollbar-thumb:hover {
+  background-color: #f1cd7a;
+}
+
+/* TOC list spacing */
+.md-nav--secondary .md-nav__list {
+  padding-top: 0.15rem;
+  padding-left: 0.2rem;
+}
+
+/* Nested TOC levels */
+.md-nav--secondary .md-nav .md-nav {
+  padding-left: 0.45rem;
+  border-left: 1px solid #332418;
+  margin-left: 0.2rem;
+}
+
+/* TOC links */
+.md-nav--secondary .md-nav__link {
+  line-height: 1.28;
+  margin-top: 0.25rem;
+}
+
+/* Active TOC item */
+.md-nav--secondary .md-nav__link--active {
+  color: #f1cd7a;
+  font-weight: 700;
+}
+
+/* Light mode TOC */
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-nav__title {
+  background: #f3eadb !important;
+  border-bottom: 1px solid #d2b98f;
+}
+
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-sidebar__scrollwrap {
+  scrollbar-color: #c99025 transparent;
+}
+
+[data-md-color-scheme="default"] .md-sidebar--secondary .md-sidebar__scrollwrap::-webkit-scrollbar-thumb {
+  background-color: #c99025;
+}
+
+[data-md-color-scheme="default"] .md-nav--secondary .md-nav .md-nav {
+  border-left: 1px solid #d2b98f;
+}
+
+
+/* =========================
+   Fix TOC title shadow
+   ========================= */
+
+.md-nav--secondary .md-nav__title {
+  background: transparent;
+  box-shadow: none !important;
+  border-bottom: none;
+  margin-bottom: 0.35rem;
+  padding-bottom: 0.15rem;
+}
+
+/* Small spacing under the TOC title */
+.md-nav--secondary .md-nav__list {
+  padding-top: 0.1rem;
+}
+
+
+/* =========================
+   Light mode readability fixes
+   ========================= */
+
+/* Tables */
+[data-md-color-scheme="default"] .md-typeset table:not([class]) {
+  background-color: #fff8ed;
+  color: #241b14;
+  border: 1px solid #d2b98f;
+}
+
+[data-md-color-scheme="default"] .md-typeset table:not([class]) th {
+  background-color: #eadcc8;
+  color: #4a3420;
+}
+
+[data-md-color-scheme="default"] .md-typeset table:not([class]) td {
+  background-color: #fff8ed;
+  color: #241b14;
+  border-top: 1px solid #e2ccb0;
+}
+
+[data-md-color-scheme="default"] .md-typeset table:not([class]) tr:nth-child(even) td {
+  background-color: #f7eedf;
+}
+
+/* Inline code inside tables */
+[data-md-color-scheme="default"] .md-typeset table:not([class]) code {
+  background-color: #eadbc4;
+  color: #4a3420;
+  border-color: #d2b98f;
+}
+
+/* Admonitions / callouts */
+[data-md-color-scheme="default"] .md-typeset .admonition,
+[data-md-color-scheme="default"] .md-typeset details {
+  background-color: #fff8ed;
+  color: #241b14;
+}
+
+[data-md-color-scheme="default"] .md-typeset .admonition-title,
+[data-md-color-scheme="default"] .md-typeset summary {
+  color: #241b14;
+}
+
+/* Warning callout specifically */
+[data-md-color-scheme="default"] .md-typeset .admonition.warning,
+[data-md-color-scheme="default"] .md-typeset details.warning {
+  background-color: #fff2d6;
+  border-color: #c99025;
+}
+
+[data-md-color-scheme="default"] .md-typeset .warning > .admonition-title,
+[data-md-color-scheme="default"] .md-typeset .warning > summary {
+  background-color: #f0d39a;
+  color: #3a2610;
+}
+
+/* Back-to-top button */
+[data-md-color-scheme="default"] .md-top {
+  background-color: #fff8ed;
+  color: #4a3420;
+  border: 1px solid #d2b98f;
+}
+
+/* Remove the sticky header shadow */
+.md-header,
+.md-header--shadow,
+.md-tabs {
+  box-shadow: none !important;
+}
+
+/* Optional: keep a clean subtle divider instead */
+.md-header,
+.md-tabs {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+/* Remove horizontal divider under page titles */
+.md-typeset h1 {
+  border-bottom: none !important;
+}
+
+/* Remove any theme-added underline/divider after h1 */
+.md-typeset h1::after {
+  display: none !important;
+  content: none !important;
+}
+
+
+
+
+/* Remove the dark sticky shadow/background in the LEFT sidebar */
+.md-sidebar--primary .md-nav__title,
+.md-sidebar--primary .md-nav__title[for="__drawer"] {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* Remove any shadow/overlay from the primary nav container */
+.md-sidebar--primary .md-nav,
+.md-sidebar--primary .md-nav__list,
+.md-sidebar--primary .md-sidebar__scrollwrap,
+.md-sidebar--primary .md-sidebar__inner {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* In some Material versions the first active block gets its own shadow */
+.md-sidebar--primary .md-nav__item--active > .md-nav__link,
+.md-sidebar--primary .md-nav__link {
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+
+/* =========================
+   Clean left sidebar
+   ========================= */
+
+/* Hide Material's duplicated nested nav titles */
+.md-sidebar--primary .md-nav__title {
+  display: none !important;
+}
+
+/* Keep sidebar links clean */
+.md-sidebar--primary .md-nav__link {
+  background: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Remove weird shadows/overlays */
+.md-sidebar--primary,
+.md-sidebar--primary .md-sidebar__scrollwrap,
+.md-sidebar--primary .md-sidebar__inner,
+.md-sidebar--primary .md-nav,
+.md-sidebar--primary .md-nav__list,
+.md-sidebar--primary .md-nav__item {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Clean active item */
+.md-sidebar--primary .md-nav__link--active {
+  color: #f1cd7a !important;
+  font-weight: 700 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Normal sidebar spacing */
+.md-sidebar--primary .md-nav__link {
+  margin-top: 0.32rem !important;
+  line-height: 1.35 !important;
+}
+
+/* Section labels like Core, Web, Defensive */
+.md-sidebar--primary .md-nav__item--section > .md-nav__link {
+  color: #d6c7ad !important;
+  font-weight: 700 !important;
+  margin-top: 1.05rem !important;
+}
+
+
+/* =========================
+   Light mode code block fixes
+   ========================= */
+
+[data-md-color-scheme="default"] .md-typeset .highlight {
+  background-color: #f7ead5 !important;
+  border: 1px solid #d8bd8d !important;
+  border-radius: 8px !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset pre > code {
+  background-color: #f7ead5 !important;
+  color: #2b2118 !important;
+  border: 1px solid #d8bd8d !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset code {
+  background-color: #ead8b8 !important;
+  color: #4a2f14 !important;
+  border-color: #d0ad73 !important;
+}
+
+/* Light mode code copy button */
+[data-md-color-scheme="default"] .md-clipboard {
+  color: #5a4226 !important;
+  background-color: #ead8b8 !important;
+  border-left: 1px solid #d0ad73 !important;
+}
+
+[data-md-color-scheme="default"] .md-clipboard:hover {
+  color: #9d6816 !important;
+}
+
+
+/* =========================
+   Light mode search visibility
+   ========================= */
+
+[data-md-color-scheme="default"] .md-search__form {
+  background-color: #fff8ed !important;
+  border: 1px solid #b99255 !important;
+}
+
+[data-md-color-scheme="default"] .md-search__input {
+  color: #241b14 !important;
+}
+
+[data-md-color-scheme="default"] .md-search__input::placeholder {
+  color: #6f5638 !important;
+  opacity: 1 !important;
+}
+
+/* Magnifying glass icon */
+[data-md-color-scheme="default"] .md-search__icon,
+[data-md-color-scheme="default"] .md-search__icon svg,
+[data-md-color-scheme="default"] .md-search__form .md-icon svg {
+  color: #4a3420 !important;
+  fill: #4a3420 !important;
+  opacity: 1 !important;
+}
+
+/* Search focused state */
+[data-md-color-scheme="default"] .md-search__form:hover,
+[data-md-color-scheme="default"] .md-search__form:focus-within {
+  border-color: #9d6816 !important;
+  box-shadow: 0 0 0 2px rgba(157, 104, 22, 0.18) !important;
+}
+
+
+/* Stronger light mode code blocks */
+[data-md-color-scheme="default"] .md-typeset .highlight {
+  background-color: #ead8b8 !important;
+  border: 1px solid #c69c5d !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset .highlight pre,
+[data-md-color-scheme="default"] .md-typeset pre {
+  background-color: #ead8b8 !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset pre > code {
+  background-color: #ead8b8 !important;
+  color: #241b14 !important;
+  border: none !important;
+}
+
+/* Make copy button visible in light mode */
+[data-md-color-scheme="default"] .md-clipboard {
+  color: #5a3412 !important;
+  background-color: #ddc292 !important;
+  border-left: 1px solid #c69c5d !important;
+  opacity: 1 !important;
+}
+
+[data-md-color-scheme="default"] .md-clipboard::before {
+  background-color: #5a3412 !important;
+}
+
+[data-md-color-scheme="default"] .md-clipboard:hover {
+  color: #8a520e !important;
+  background-color: #d4b77f !important;
+}
+
+
+
+/* =========================
+   Final light mode code block tuning
+   ========================= */
+
+[data-md-color-scheme="default"] .md-typeset .highlight {
+  background-color: #ead8b8 !important;
+  border: 1px solid #b98a45 !important;
+  border-radius: 7px !important;
+  margin: 0.75rem 0 1rem !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset .highlight pre,
+[data-md-color-scheme="default"] .md-typeset pre {
+  background-color: #ead8b8 !important;
+  margin: 0 !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset pre > code {
+  background-color: #ead8b8 !important;
+  color: #1f160f !important;
+  border: none !important;
+  font-size: 0.7rem !important;
+  line-height: 1.45 !important;
+  padding: 0.85rem 1rem !important;
+}
+
+/* Inline code in light mode */
+[data-md-color-scheme="default"] .md-typeset code:not(pre code) {
+  background-color: #dec395 !important;
+  color: #3a220c !important;
+  border: 1px solid #bc8d49 !important;
+  border-radius: 4px !important;
+}
+
+/* Copy button in light mode */
+[data-md-color-scheme="default"] .md-clipboard {
+  color: #4a2c10 !important;
+  background-color: #d8b77e !important;
+  border-left: 1px solid #b98a45 !important;
+  opacity: 1 !important;
+}
+
+[data-md-color-scheme="default"] .md-clipboard::before {
+  background-color: #4a2c10 !important;
+}
+
+[data-md-color-scheme="default"] .md-clipboard:hover {
+  color: #241506 !important;
+  background-color: #cfa866 !important;
+}
+
+
+/* Fix light mode code block corners */
+[data-md-color-scheme="default"] .md-typeset .highlight {
+  overflow: hidden !important;
+  border-radius: 8px !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset .highlight pre,
+[data-md-color-scheme="default"] .md-typeset .highlight code {
+  border-radius: 0 !important;
+}
+
+/* Keep copy button aligned with rounded parent */
+[data-md-color-scheme="default"] .md-typeset .highlight .md-clipboard {
+  border-radius: 0 8px 0 0 !important;
+}
+
+/* Match light mode code block sizing to dark mode */
+[data-md-color-scheme="default"] .md-typeset .highlight {
+  margin: 0.75rem 0 1rem !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset .highlight pre {
+  margin: 0 !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset pre > code {
+  font-size: 0.68rem !important;
+  line-height: 1.5 !important;
+  padding: 0.75rem !important;
+}
+
+
+/* =========================
+   Final readability polish
+   ========================= */
+
+.md-content {
+  max-width: 960px;
+}
+
+.md-typeset {
+  font-size: 0.76rem;
+  line-height: 1.68;
+}
+
+.md-typeset p,
+.md-typeset li {
+  line-height: 1.68;
+}
+
+.md-nav__link {
+  line-height: 1.45 !important;
+  margin-top: 0.38rem !important;
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  line-height: 1.6;
+}
+
+
+/* Disable visible search highlights */
+.md-typeset mark {
+  background: transparent !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}

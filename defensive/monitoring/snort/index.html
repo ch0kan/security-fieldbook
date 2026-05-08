@@ -1,0 +1,7976 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A practical cybersecurity fieldbook with pentesting notes, lab writeups, tools, and hands-on learning.">
+      
+      
+        <meta name="author" content="Antonie Grigore">
+      
+      
+      
+        <link rel="prev" href="../splunk/">
+      
+      
+        <link rel="next" href="../yara-and-sigma/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>IDS / IPS - Security Fieldbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ids-ips-snort-suricata-and-zeek" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Security Fieldbook" class="md-header__button md-logo" aria-label="Security Fieldbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Security Fieldbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              IDS / IPS
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="brown" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  About
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../projects/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../foundations/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Foundations
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../offensive/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Offensive Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Defensive Security
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../writeups/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Writeups
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../cheatsheets/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Cheatsheets
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Security Fieldbook" class="md-nav__button md-logo" aria-label="Security Fieldbook" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Security Fieldbook
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../projects/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projects
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/ssrf-request-mapper/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSRF Request Mapper
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/windows-persistence-triage-reporter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Persistence Triage Reporter
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../projects/cve-patch-autopsy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CVE Patch Autopsy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../foundations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Foundations
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Foundations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../foundations/networking/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Networking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/networking/network-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/networking/protocols/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protocols
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/networking/subnetting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Subnetting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/networking/cryptography/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cryptography
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../foundations/operating-systems/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operating Systems
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operating Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3_2" id="__nav_4_3_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Linux
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/operating-systems/linux/structure-and-workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Structure and Workflow
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/operating-systems/linux/system-management/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    System Management
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/operating-systems/linux/bash-scripting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Bash Scripting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3_3" id="__nav_4_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Windows
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/operating-systems/windows/command-line/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Line
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/operating-systems/windows/powershell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PowerShell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/operating-systems/windows/services-processes-and-wmi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Services, Processes, and WMI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../foundations/identity/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Identity and Access
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_4" id="__nav_4_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Identity and Access
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/identity/active-directory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Active Directory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/identity/windows-authentication-and-access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Authentication and Access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../foundations/web/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4_5" id="__nav_4_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Web
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/web/how-the-web-works/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    How the Web Works
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/web/javascript-essentials/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JavaScript Essentials
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../foundations/web/sql-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../offensive/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Offensive Security
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Offensive Security
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/methodology/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_3" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../offensive/reconnaissance/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_3" id="__nav_5_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reconnaissance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/reconnaissance/nmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/reconnaissance/footprinting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Footprinting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/reconnaissance/content-discovery/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Content Discovery
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/reconnaissance/web-reconnaissance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Reconnaissance
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../offensive/exploitation/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploitation
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_4" id="__nav_5_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Exploitation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4_2" id="__nav_5_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Web
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/exploitation/web/sql-injection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQL Injection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/exploitation/web/path-traversal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Path Traversal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/exploitation/web/file-upload/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File Upload
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/exploitation/web/ssrf/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SSRF
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/exploitation/web/access-control/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Access Control
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/exploitation/web/front-end-vulnerabilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Front-End Vulnerabilities
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_5_4_3" id="__nav_5_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Targets
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_5_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Targets
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/exploitation/targets/linux/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/exploitation/targets/windows/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/exploitation/targets/wordpress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    WordPress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../offensive/operations/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operations
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_5" id="__nav_5_5_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/operations/file-transfers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File Transfers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/operations/pivoting-and-tunneling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pivoting and Tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../offensive/tools/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tools
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5_6" id="__nav_5_6_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_5_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tools
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/tools/burp-suite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Burp Suite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/tools/web-proxies/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Proxies
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/tools/metasploit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metasploit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/tools/shells/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/tools/hydra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hydra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/tools/sqlmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQLMap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../offensive/tools/gobuster/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gobuster
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defensive Security
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6" id="__nav_6_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Defensive Security
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../frameworks/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frameworks
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6_2" id="__nav_6_2_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Frameworks
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frameworks/mitre-attack/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    MITRE ATT&CK
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frameworks/cyber-kill-chain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cyber Kill Chain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frameworks/unified-kill-chain/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Unified Kill Chain
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../frameworks/diamond-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diamond Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_3" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Monitoring
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6_3" id="__nav_6_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Monitoring
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../windows-event-logging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Event Logging
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../log-sources/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Log Sources
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../splunk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Splunk
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IDS / IPS
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IDS / IPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ids-vs-ips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IDS vs IPS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IDS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detection Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-operation-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Operation Modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-snort-on-a-pcap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Snort on a PCAP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-snort-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Snort Live
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-ips-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort IPS Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-alert-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Alert Modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-logger-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Logger Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-rule-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Rule Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule Header
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule Options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-rule-ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Rule IDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#content-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Content Matching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-practical-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Practical Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-sticky-buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Sticky Buffers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detection Filter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Inputs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-rule-keywords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Rule Keywords
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-and-tls-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata and TLS Detection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-file-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata File Extraction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zeek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zeek
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zeek-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zeek Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zeek-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zeek Logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-zeek-on-pcap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Zeek on PCAP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zeek-cut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zeek-cut
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zeek-hunting-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zeek Hunting Use Cases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Zeek Hunting Use Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#beaconing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beaconing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-exfiltration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS Exfiltration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-exfiltration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Exfiltration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#psexec-lateral-movement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PsExec Lateral Movement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-vs-suricata-vs-zeek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort vs Suricata vs Zeek
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes-to-remember" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes to Remember
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../yara-and-sigma/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    YARA and Sigma
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../traffic-analysis/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Traffic Analysis
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6_4" id="__nav_6_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Traffic Analysis
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../traffic-analysis/wireshark/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Wireshark
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../traffic-analysis/tcpdump/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tcpdump
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_5" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../threat-detection/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Threat Detection
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6_5" id="__nav_6_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Threat Detection
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../threat-detection/windows-attacks-and-defense/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Attacks and Defense
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../threat-detection/windows-security-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Security Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../threat-detection/linux-security-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Security Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../threat-detection/web-security-monitoring/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Security Monitoring
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../threat-detection/file-transfer-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File Transfer Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../threat-detection/malware-concepts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Malware Concepts
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../threat-detection/malware-analysis/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Malware Analysis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../threat-detection/javascript-deobfuscation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    JavaScript Deobfuscation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_6" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../incident-response/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incident Response
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_6_6" id="__nav_6_6_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Incident Response
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../incident-response/incident-handling-process/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Incident Response Process
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../incident-response/digital-forensics/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Digital Forensics
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../incident-response/data-exfiltration-detection/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Data Exfiltration Detection
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_7" id="__nav_6_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Operations
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security Operations
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security-operations/defensive-security-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defensive Security Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security-operations/soc-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SOC Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_8" id="__nav_6_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Architecture
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security Architecture
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security-architecture/firewall-fundamentals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Firewall Fundamentals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_6_9" id="__nav_6_9_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Solutions
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security Solutions
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../security-solutions/ids-ips/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    IDS/IPS
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../writeups/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Writeups
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7" id="__nav_7_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Writeups
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7_2" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../writeups/home-lab/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home Lab
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_7_2" id="__nav_7_2_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_7_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Home Lab
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../writeups/home-lab/lab-architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../writeups/home-lab/windows-live-triage-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Live Triage Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../writeups/home-lab/persistence-investigation-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Persistence Investigation Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../writeups/home-lab/network-traffic-investigation-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Network Traffic Investigation Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../writeups/home-lab/password-security-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Password Security Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../writeups/home-lab/web-attack-simulation-lab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Attack Simulation Lab
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../writeups/home-lab/lessons-learned/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lessons Learned
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../cheatsheets/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cheatsheets
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_8" id="__nav_8_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cheatsheets
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_2" id="__nav_8_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Core
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Core
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/core/common-ports/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Common Ports
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/core/networking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Networking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/core/encoding-and-hashing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Encoding and Hashing
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_3" id="__nav_8_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Operating Systems
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Operating Systems
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/operating-systems/linux-commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/operating-systems/windows-commands/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Windows Commands
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/operating-systems/powershell/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PowerShell
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_4" id="__nav_8_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reconnaissance
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reconnaissance
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/reconnaissance/nmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/reconnaissance/dns-and-subdomains/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DNS and Subdomains
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/reconnaissance/osint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSINT
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_5" id="__nav_8_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Web
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/web/burp-suite/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Burp Suite
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/web/web-requests/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Web Requests
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/web/sqlmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SQLMap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_6" id="__nav_8_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exploitation
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Exploitation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/exploitation/metasploit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metasploit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/exploitation/shells/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shells
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/exploitation/file-transfers/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    File Transfers
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/exploitation/pivoting-and-tunneling/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pivoting and Tunneling
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_7" id="__nav_8_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Credentials
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Credentials
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/credentials/hydra/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hydra
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/credentials/password-cracking/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Password Cracking
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_8_8" id="__nav_8_8_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Defensive
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_8_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_8_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Defensive
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/defensive/log-hunting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Log Hunting
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/defensive/splunk-queries/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Splunk Queries
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../cheatsheets/defensive/detection-quick-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Detection Quick Reference
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#ids-vs-ips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IDS vs IPS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IDS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ips" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IPS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detection Methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-operation-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Operation Modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-snort-on-a-pcap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Snort on a PCAP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-snort-live" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Snort Live
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-ips-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort IPS Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-alert-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Alert Modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-logger-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Logger Mode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-rule-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Rule Structure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-header" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule Header
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rule-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rule Options
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-rule-ids" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Rule IDs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#content-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Content Matching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-practical-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Practical Examples
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-sticky-buffers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort Sticky Buffers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection-filter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Detection Filter
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Inputs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-rule-keywords" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata Rule Keywords
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-and-tls-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata and TLS Detection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#suricata-file-extraction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Suricata File Extraction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zeek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zeek
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zeek-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zeek Architecture
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zeek-logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zeek Logs
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#running-zeek-on-pcap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Running Zeek on PCAP
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zeek-cut" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        zeek-cut
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#zeek-hunting-use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zeek Hunting Use Cases
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Zeek Hunting Use Cases">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#beaconing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beaconing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-exfiltration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS Exfiltration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-exfiltration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        TLS Exfiltration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#psexec-lateral-movement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PsExec Lateral Movement
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#snort-vs-suricata-vs-zeek" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Snort vs Suricata vs Zeek
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#notes-to-remember" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Notes to Remember
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="ids-ips-snort-suricata-and-zeek">IDS, IPS, Snort, Suricata, and Zeek</h1>
+<p>Network intrusion detection tools inspect traffic for suspicious or malicious activity.</p>
+<p>IDS and IPS tools such as Snort and Suricata use rules to alert on or block threats, while Zeek focuses on rich network security monitoring logs.</p>
+<hr />
+<h2 id="ids-vs-ips">IDS vs IPS</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Meaning</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IDS</td>
+<td>Intrusion Detection System</td>
+<td>Monitors and alerts</td>
+</tr>
+<tr>
+<td>IPS</td>
+<td>Intrusion Prevention System</td>
+<td>Monitors and blocks</td>
+</tr>
+<tr>
+<td>NIDS</td>
+<td>Network IDS</td>
+<td>Watches network traffic</td>
+</tr>
+<tr>
+<td>HIDS</td>
+<td>Host IDS</td>
+<td>Watches one endpoint</td>
+</tr>
+<tr>
+<td>NIPS</td>
+<td>Network IPS</td>
+<td>Blocks network traffic inline</td>
+</tr>
+<tr>
+<td>HIPS</td>
+<td>Host IPS</td>
+<td>Blocks activity on one endpoint</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="ids">IDS</h2>
+<p>An IDS is passive.</p>
+<p>It receives a copy of traffic, usually from:</p>
+<ul>
+<li>SPAN port</li>
+<li>Network tap</li>
+<li>Packet capture</li>
+<li>Mirrored interface</li>
+</ul>
+<p>It can alert analysts, but it does not stop traffic directly.</p>
+<p>Benefits:</p>
+<ul>
+<li>No latency impact</li>
+<li>Lower risk of breaking traffic</li>
+<li>Useful for monitoring and forensics</li>
+</ul>
+<p>Limitations:</p>
+<ul>
+<li>Cannot block attacks by itself</li>
+<li>Requires analyst review</li>
+<li>Can generate false positives</li>
+</ul>
+<hr />
+<h2 id="ips">IPS</h2>
+<p>An IPS is active.</p>
+<p>It sits inline with traffic and can:</p>
+<ul>
+<li>Drop packets</li>
+<li>Reject connections</li>
+<li>Block exploit attempts</li>
+<li>Stop known malicious traffic</li>
+</ul>
+<p>Benefits:</p>
+<ul>
+<li>Can stop attacks in real time</li>
+<li>Useful at network choke points</li>
+</ul>
+<p>Limitations:</p>
+<ul>
+<li>Adds latency</li>
+<li>False positives can break legitimate traffic</li>
+<li>Requires careful tuning</li>
+</ul>
+<hr />
+<h2 id="detection-methods">Detection Methods</h2>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Description</th>
+<th>Strength</th>
+<th>Weakness</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Signature-based</td>
+<td>Matches known malicious patterns</td>
+<td>High fidelity for known threats</td>
+<td>Misses new variants</td>
+</tr>
+<tr>
+<td>Behavior-based</td>
+<td>Detects deviations from normal</td>
+<td>Can catch unknown threats</td>
+<td>More false positives</td>
+</tr>
+<tr>
+<td>Policy-based</td>
+<td>Alerts on policy violations</td>
+<td>Good for compliance</td>
+<td>Depends on policy quality</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="snort">Snort</h2>
+<p>Snort is an open-source packet sniffer, packet logger, IDS, and IPS.</p>
+<p>It can:</p>
+<ul>
+<li>Read live traffic</li>
+<li>Read PCAP files</li>
+<li>Log packets</li>
+<li>Apply rules</li>
+<li>Generate alerts</li>
+<li>Drop packets in inline mode</li>
+</ul>
+<hr />
+<h2 id="snort-operation-modes">Snort Operation Modes</h2>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sniffer</td>
+<td>Print packets to console</td>
+</tr>
+<tr>
+<td>Logger</td>
+<td>Save packets to disk</td>
+</tr>
+<tr>
+<td>IDS</td>
+<td>Alert on rule matches</td>
+</tr>
+<tr>
+<td>IPS</td>
+<td>Drop or reject malicious traffic</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="snort-architecture">Snort Architecture</h2>
+<p>Snort processes traffic through a pipeline:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Packet capture
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  -&gt; Decoder
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  -&gt; Preprocessors / Inspectors
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  -&gt; Detection engine
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  -&gt; Logging / alerting
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Packet decoder</td>
+<td>Parses raw packets</td>
+</tr>
+<tr>
+<td>Preprocessors / inspectors</td>
+<td>Normalize traffic and inspect protocols</td>
+</tr>
+<tr>
+<td>Detection engine</td>
+<td>Compares traffic against rules</td>
+</tr>
+<tr>
+<td>Alerting</td>
+<td>Outputs alerts and logs</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="snort-configuration">Snort Configuration</h2>
+<p>Snort 3 commonly uses:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>snort.lua
+</code></pre></div>
+<p>Older Snort deployments may use:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>snort.conf
+</code></pre></div>
+<p>Configuration defines:</p>
+<ul>
+<li>Network variables</li>
+<li>Rule paths</li>
+<li>Inspectors/modules</li>
+<li>Output settings</li>
+<li>DAQ configuration</li>
+</ul>
+<p>Common network variables:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>HOME_NET
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>EXTERNAL_NET
+</code></pre></div>
+<p>Validate configuration:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>snort<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.lua
+</code></pre></div>
+<p>Older style test mode:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.conf<span class="w"> </span>-T
+</code></pre></div>
+<hr />
+<h2 id="running-snort-on-a-pcap">Running Snort on a PCAP</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.lua<span class="w"> </span>-r<span class="w"> </span>traffic.pcap
+</code></pre></div>
+<p>With alert output:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.lua<span class="w"> </span>-r<span class="w"> </span>malicious.pcap<span class="w"> </span>-A<span class="w"> </span>cmg
+</code></pre></div>
+<p>Load a specific rule file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>snort<span class="w"> </span>-c<span class="w"> </span>snort.lua<span class="w"> </span>-r<span class="w"> </span>test.pcap<span class="w"> </span>-R<span class="w"> </span>/path/to/local.rules
+</code></pre></div>
+<p>Load a rule directory:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>snort<span class="w"> </span>-c<span class="w"> </span>snort.lua<span class="w"> </span>-r<span class="w"> </span>test.pcap<span class="w"> </span>--rule-path<span class="w"> </span>/path/to/rules_dir/
+</code></pre></div>
+<hr />
+<h2 id="running-snort-live">Running Snort Live</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.lua<span class="w"> </span>-i<span class="w"> </span>eth0
+</code></pre></div>
+<p>Run in background:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.conf<span class="w"> </span>-D
+</code></pre></div>
+<p>Check process:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>ps<span class="w"> </span>-ef<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>snort
+</code></pre></div>
+<hr />
+<h2 id="snort-ips-mode">Snort IPS Mode</h2>
+<p>IPS mode requires inline traffic.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.conf<span class="w"> </span>-q<span class="w"> </span>-Q<span class="w"> </span>--daq<span class="w"> </span>afpacket<span class="w"> </span>-i<span class="w"> </span>eth0:eth1<span class="w"> </span>-A<span class="w"> </span>console
+</code></pre></div>
+<p>Key flags:</p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-Q</code></td>
+<td>Inline IPS mode</td>
+</tr>
+<tr>
+<td><code>--daq afpacket</code></td>
+<td>Linux packet acquisition</td>
+</tr>
+<tr>
+<td><code>-i eth0:eth1</code></td>
+<td>Inline bridge pair</td>
+</tr>
+<tr>
+<td><code>-A console</code></td>
+<td>Console alerts</td>
+</tr>
+</tbody>
+</table>
+<p>IPS rules usually use actions like:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>drop
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>reject
+</code></pre></div>
+<hr />
+<h2 id="snort-alert-modes">Snort Alert Modes</h2>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>console</code></td>
+<td>Prints alerts to terminal</td>
+</tr>
+<tr>
+<td><code>fast</code></td>
+<td>Compact alert format</td>
+</tr>
+<tr>
+<td><code>full</code></td>
+<td>Detailed packet/header output</td>
+</tr>
+<tr>
+<td><code>cmg</code></td>
+<td>Alert plus packet payload</td>
+</tr>
+<tr>
+<td><code>csv</code></td>
+<td>CSV output</td>
+</tr>
+<tr>
+<td><code>unified2</code></td>
+<td>Binary high-performance format</td>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>Disable alert file</td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-c<span class="w"> </span>/etc/snort/snort.lua<span class="w"> </span>-r<span class="w"> </span>traffic.pcap<span class="w"> </span>-A<span class="w"> </span>fast
+</code></pre></div>
+<hr />
+<h2 id="snort-logger-mode">Snort Logger Mode</h2>
+<p>Snort can save packets to disk.</p>
+<p>Binary logging:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-dev<span class="w"> </span>-l<span class="w"> </span>.
+</code></pre></div>
+<p>ASCII logging:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-dev<span class="w"> </span>-K<span class="w"> </span>ASCII<span class="w"> </span>-l<span class="w"> </span>.
+</code></pre></div>
+<p>Read Snort binary logs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-r<span class="w"> </span>snort.log.1638459842
+</code></pre></div>
+<p>Read only ICMP:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-r<span class="w"> </span>snort.log.1638459842<span class="w"> </span>icmp
+</code></pre></div>
+<p>Read DNS traffic:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>sudo<span class="w"> </span>snort<span class="w"> </span>-r<span class="w"> </span>snort.log.1638459842<span class="w"> </span><span class="s1">&#39;udp and port 53&#39;</span>
+</code></pre></div>
+<p>Default binary logs can also be opened with:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>tcpdump<span class="w"> </span>-r<span class="w"> </span>snort.log.1638459842<span class="w"> </span>-n
+</code></pre></div>
+<p>Or Wireshark.</p>
+<hr />
+<h2 id="snort-rule-structure">Snort Rule Structure</h2>
+<p>A Snort rule has two parts:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>Rule Header (traffic match) + Rule Options (detection logic)
+</code></pre></div>
+<p>General structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>action protocol source_ip source_port direction dest_ip dest_port (options;)
+</code></pre></div>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>alert<span class="w"> </span>tcp<span class="w"> </span>any<span class="w"> </span>any<span class="w"> </span>-&gt;<span class="w"> </span>any<span class="w"> </span><span class="m">80</span><span class="w"> </span><span class="o">(</span>msg:<span class="s2">&quot;Sensitive File Access&quot;</span><span class="p">;</span><span class="w"> </span>content:<span class="s2">&quot;passwords.txt&quot;</span><span class="p">;</span><span class="w"> </span>nocase<span class="p">;</span><span class="w"> </span>sid:1000001<span class="p">;</span><span class="w"> </span>rev:1<span class="p">;</span><span class="o">)</span>
+</code></pre></div>
+<hr />
+<h2 id="rule-header">Rule Header</h2>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Action</td>
+<td>What to do</td>
+<td><code>alert</code>, <code>log</code>, <code>drop</code>, <code>reject</code></td>
+</tr>
+<tr>
+<td>Protocol</td>
+<td>Protocol</td>
+<td><code>tcp</code>, <code>udp</code>, <code>icmp</code>, <code>ip</code></td>
+</tr>
+<tr>
+<td>Source IP</td>
+<td>Sender</td>
+<td><code>any</code>, <code>$HOME_NET</code>, <code>!192.168.1.1</code></td>
+</tr>
+<tr>
+<td>Source Port</td>
+<td>Sender port</td>
+<td><code>any</code>, <code>80</code>, <code>1:1024</code></td>
+</tr>
+<tr>
+<td>Direction</td>
+<td>Flow</td>
+<td><code>-&gt;</code>, <code>&lt;&gt;</code></td>
+</tr>
+<tr>
+<td>Destination IP</td>
+<td>Receiver</td>
+<td><code>$EXTERNAL_NET</code>, <code>any</code></td>
+</tr>
+<tr>
+<td>Destination Port</td>
+<td>Receiver port</td>
+<td><code>443</code>, <code>any</code></td>
+</tr>
+</tbody>
+</table>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>alert<span class="w"> </span>tcp<span class="w"> </span><span class="nv">$EXTERNAL_NET</span><span class="w"> </span>any<span class="w"> </span>-&gt;<span class="w"> </span><span class="nv">$HOME_NET</span><span class="w"> </span><span class="m">80</span>
+</code></pre></div>
+<hr />
+<h2 id="rule-options">Rule Options</h2>
+<p>Rule options are inside parentheses and separated by semicolons.</p>
+<p>Common options:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>msg</code></td>
+<td>Alert message</td>
+</tr>
+<tr>
+<td><code>sid</code></td>
+<td>Signature ID</td>
+</tr>
+<tr>
+<td><code>rev</code></td>
+<td>Revision</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>Match text or bytes</td>
+</tr>
+<tr>
+<td><code>nocase</code></td>
+<td>Case-insensitive content match</td>
+</tr>
+<tr>
+<td><code>fast_pattern</code></td>
+<td>Preferred quick match</td>
+</tr>
+<tr>
+<td><code>flags</code></td>
+<td>TCP flag matching</td>
+</tr>
+<tr>
+<td><code>dsize</code></td>
+<td>Payload size</td>
+</tr>
+<tr>
+<td><code>flow</code></td>
+<td>Direction/session state</td>
+</tr>
+<tr>
+<td><code>pcre</code></td>
+<td>Regular expression</td>
+</tr>
+<tr>
+<td><code>detection_filter</code></td>
+<td>Thresholding</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="snort-rule-ids">Snort Rule IDs</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">SID Range</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><code>&lt; 100</code></td>
+<td>Reserved</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>100 - 999999</code></td>
+<td>Standard/community rules</td>
+</tr>
+<tr>
+<td style="text-align: right;"><code>&gt;= 1000000</code></td>
+<td>Local custom rules</td>
+</tr>
+</tbody>
+</table>
+<p>For your own rules, use:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>sid:1000001;
+</code></pre></div>
+<p>Increment <code>rev</code> when you update a rule:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>rev:2;
+</code></pre></div>
+<hr />
+<h2 id="content-matching">Content Matching</h2>
+<p>ASCII content:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>content:&quot;GET&quot;;
+</code></pre></div>
+<p>Hex content:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>content:&quot;|90 90 90|&quot;;
+</code></pre></div>
+<p>Case-insensitive:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>content:&quot;malware&quot;; nocase;
+</code></pre></div>
+<p>Fast pattern:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>content:&quot;EvilUserAgent&quot;; fast_pattern;
+</code></pre></div>
+<hr />
+<h2 id="snort-practical-examples">Snort Practical Examples</h2>
+<p>Detect request for a sensitive file:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>alert<span class="w"> </span>tcp<span class="w"> </span>any<span class="w"> </span>any<span class="w"> </span>-&gt;<span class="w"> </span>any<span class="w"> </span><span class="m">80</span><span class="w"> </span><span class="o">(</span>msg:<span class="s2">&quot;Sensitive File Access&quot;</span><span class="p">;</span><span class="w"> </span>content:<span class="s2">&quot;GET&quot;</span><span class="p">;</span><span class="w"> </span>http_method<span class="p">;</span><span class="w"> </span>content:<span class="s2">&quot;passwords.txt&quot;</span><span class="p">;</span><span class="w"> </span>nocase<span class="p">;</span><span class="w"> </span>sid:1000001<span class="p">;</span><span class="w"> </span>rev:1<span class="p">;</span><span class="o">)</span>
+</code></pre></div>
+<p>Reject large FTP payloads:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>reject<span class="w"> </span>tcp<span class="w"> </span>any<span class="w"> </span>any<span class="w"> </span>-&gt;<span class="w"> </span><span class="m">192</span>.168.1.5<span class="w"> </span><span class="m">21</span><span class="w"> </span><span class="o">(</span>msg:<span class="s2">&quot;FTP Buffer Overflow Attempt&quot;</span><span class="p">;</span><span class="w"> </span>dsize:&gt;500<span class="p">;</span><span class="w"> </span>sid:1000002<span class="p">;</span><span class="w"> </span>rev:1<span class="p">;</span><span class="o">)</span>
+</code></pre></div>
+<p>Detect a simple ICMP packet:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>alert<span class="w"> </span>icmp<span class="w"> </span>any<span class="w"> </span>any<span class="w"> </span>-&gt;<span class="w"> </span>any<span class="w"> </span>any<span class="w"> </span><span class="o">(</span>msg:<span class="s2">&quot;ICMP Packet Found&quot;</span><span class="p">;</span><span class="w"> </span>sid:1000003<span class="p">;</span><span class="w"> </span>rev:1<span class="p">;</span><span class="o">)</span>
+</code></pre></div>
+<hr />
+<h2 id="snort-sticky-buffers">Snort Sticky Buffers</h2>
+<p>Sticky buffers tell Snort where to inspect.</p>
+<p>Examples:</p>
+<table>
+<thead>
+<tr>
+<th>Buffer</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>http_method</code></td>
+<td>HTTP method</td>
+</tr>
+<tr>
+<td><code>http_uri</code></td>
+<td>URI</td>
+</tr>
+<tr>
+<td><code>http_header</code></td>
+<td>HTTP headers</td>
+</tr>
+<tr>
+<td><code>http_client_body</code></td>
+<td>POST body</td>
+</tr>
+</tbody>
+</table>
+<p>Efficient HTTP example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>alert<span class="w"> </span>http<span class="w"> </span><span class="nv">$HOME_NET</span><span class="w"> </span>any<span class="w"> </span>-&gt;<span class="w"> </span><span class="nv">$EXTERNAL_NET</span><span class="w"> </span>any<span class="w"> </span><span class="o">(</span>msg:<span class="s2">&quot;Patchwork Beacon&quot;</span><span class="p">;</span><span class="w"> </span>http_method<span class="p">;</span><span class="w"> </span>content:<span class="s2">&quot;POST&quot;</span><span class="p">;</span><span class="w"> </span>http_uri<span class="p">;</span><span class="w"> </span>content:<span class="s2">&quot;.php?profile=&quot;</span><span class="p">;</span><span class="w"> </span>http_client_body<span class="p">;</span><span class="w"> </span>content:<span class="s2">&quot;ddager=&quot;</span>,<span class="w"> </span>depth<span class="w"> </span><span class="m">7</span><span class="p">;</span><span class="w"> </span>http_header<span class="p">;</span><span class="w"> </span>content:!<span class="s2">&quot;Accept&quot;</span><span class="p">;</span><span class="w"> </span>sid:1000006<span class="p">;</span><span class="w"> </span>rev:1<span class="p">;</span><span class="o">)</span>
+</code></pre></div>
+<hr />
+<h2 id="detection-filter">Detection Filter</h2>
+<p>Use <code>detection_filter</code> to alert only after repeated behavior.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>alert<span class="w"> </span>udp<span class="w"> </span><span class="nv">$HOME_NET</span><span class="w"> </span>any<span class="w"> </span>-&gt;<span class="w"> </span><span class="nv">$EXTERNAL_NET</span><span class="w"> </span>any<span class="w"> </span><span class="o">(</span>msg:<span class="s2">&quot;Cerber Check-in&quot;</span><span class="p">;</span><span class="w"> </span>dsize:9<span class="p">;</span><span class="w"> </span>content:<span class="s2">&quot;hi&quot;</span>,<span class="w"> </span>depth<span class="w"> </span><span class="m">2</span>,<span class="w"> </span>fast_pattern<span class="p">;</span><span class="w"> </span>pcre:<span class="s2">&quot;/^[af0-9]{7}</span>$<span class="s2">/R&quot;</span><span class="p">;</span><span class="w"> </span>detection_filter:track<span class="w"> </span>by_src,<span class="w"> </span>count<span class="w"> </span><span class="m">1</span>,<span class="w"> </span>seconds<span class="w"> </span><span class="m">60</span><span class="p">;</span><span class="w"> </span>sid:2816763<span class="p">;</span><span class="w"> </span>rev:1<span class="p">;</span><span class="o">)</span>
+</code></pre></div>
+<p>This tracks by source IP and alerts when the threshold is met.</p>
+<hr />
+<h2 id="suricata">Suricata</h2>
+<p>Suricata is a high-performance open-source network analysis engine.</p>
+<p>It supports:</p>
+<ul>
+<li>IDS</li>
+<li>IPS</li>
+<li>Network Security Monitoring</li>
+<li>Deep packet inspection</li>
+<li>Protocol metadata logging</li>
+<li>JSON output through <code>eve.json</code></li>
+</ul>
+<hr />
+<h2 id="suricata-modes">Suricata Modes</h2>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Role</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IDS</td>
+<td>Silent observer</td>
+<td>Alerts but does not block</td>
+</tr>
+<tr>
+<td>IPS</td>
+<td>Active defender</td>
+<td>Inline and can drop traffic</td>
+</tr>
+<tr>
+<td>IDPS</td>
+<td>Hybrid</td>
+<td>Passive with active responses</td>
+</tr>
+<tr>
+<td>NSM</td>
+<td>Logger</td>
+<td>Records metadata and transactions</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="suricata-inputs">Suricata Inputs</h2>
+<table>
+<thead>
+<tr>
+<th>Input</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-r</code></td>
+<td>Read PCAP file</td>
+</tr>
+<tr>
+<td>LibPCAP</td>
+<td>Standard live capture</td>
+</tr>
+<tr>
+<td>AF_PACKET</td>
+<td>High-performance Linux capture</td>
+</tr>
+<tr>
+<td>NFQ</td>
+<td>Inline Linux mode with iptables</td>
+</tr>
+</tbody>
+</table>
+<p>Run against PCAP:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>suricata<span class="w"> </span>-r<span class="w"> </span>capture.pcap
+</code></pre></div>
+<p>Live AF_PACKET mode:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>sudo<span class="w"> </span>suricata<span class="w"> </span>--af-packet<span class="o">=</span>eth0
+</code></pre></div>
+<p>Validate config:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>sudo<span class="w"> </span>suricata<span class="w"> </span>-T<span class="w"> </span>-c<span class="w"> </span>/etc/suricata/suricata.yaml
+</code></pre></div>
+<hr />
+<h2 id="suricata-logs">Suricata Logs</h2>
+<p>Common log path:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>/var/log/suricata/
+</code></pre></div>
+<p>Important files:</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eve.json</code></td>
+<td>Main JSON event output</td>
+</tr>
+<tr>
+<td><code>fast.log</code></td>
+<td>Simple alert log</td>
+</tr>
+<tr>
+<td><code>stats.log</code></td>
+<td>Performance stats</td>
+</tr>
+</tbody>
+</table>
+<p>Filter alerts with <code>jq</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>cat<span class="w"> </span>eve.json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;select(.event_type == &quot;alert&quot;)&#39;</span>
+</code></pre></div>
+<p>Filter DNS events:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>cat<span class="w"> </span>eve.json<span class="w"> </span><span class="p">|</span><span class="w"> </span>jq<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;select(.event_type == &quot;dns&quot;)&#39;</span>
+</code></pre></div>
+<hr />
+<h2 id="suricata-configuration">Suricata Configuration</h2>
+<p>Main config:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>/etc/suricata/suricata.yaml
+</code></pre></div>
+<p>Important variables:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>HOME_NET
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>EXTERNAL_NET
+</code></pre></div>
+<p>Update rules:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>suricata-update
+</code></pre></div>
+<p>Live rule reload:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="nb">kill</span><span class="w"> </span>-usr2<span class="w"> </span><span class="k">$(</span>pidof<span class="w"> </span>suricata<span class="k">)</span>
+</code></pre></div>
+<hr />
+<h2 id="suricata-rules">Suricata Rules</h2>
+<p>Suricata rules are similar to Snort rules.</p>
+<p>General structure:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>action protocol source_ip source_port -&gt; dest_ip dest_port (options;)
+</code></pre></div>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a>alert<span class="w"> </span>http<span class="w"> </span><span class="nv">$HOME_NET</span><span class="w"> </span>any<span class="w"> </span>-&gt;<span class="w"> </span><span class="nv">$EXTERNAL_NET</span><span class="w"> </span>any<span class="w"> </span><span class="o">(</span>msg:<span class="s2">&quot;Possible PowerShell Empire&quot;</span><span class="p">;</span><span class="w"> </span>flow:established,to_server<span class="p">;</span><span class="w"> </span>content:<span class="s2">&quot;GET&quot;</span><span class="p">;</span><span class="w"> </span>http_method<span class="p">;</span><span class="w"> </span>content:<span class="s2">&quot;session=&quot;</span><span class="p">;</span><span class="w"> </span>http_cookie<span class="p">;</span><span class="w"> </span>sid:3000001<span class="p">;</span><span class="w"> </span>rev:1<span class="p">;</span><span class="o">)</span>
+</code></pre></div>
+<hr />
+<h2 id="suricata-rule-keywords">Suricata Rule Keywords</h2>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>msg</code></td>
+<td>Alert message</td>
+</tr>
+<tr>
+<td><code>sid</code></td>
+<td>Signature ID</td>
+</tr>
+<tr>
+<td><code>rev</code></td>
+<td>Rule revision</td>
+</tr>
+<tr>
+<td><code>flow</code></td>
+<td>Session direction/state</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>Match string/bytes</td>
+</tr>
+<tr>
+<td><code>nocase</code></td>
+<td>Case-insensitive</td>
+</tr>
+<tr>
+<td><code>dsize</code></td>
+<td>Payload size</td>
+</tr>
+<tr>
+<td><code>offset</code> / <code>depth</code></td>
+<td>Absolute search location</td>
+</tr>
+<tr>
+<td><code>distance</code> / <code>within</code></td>
+<td>Relative search location</td>
+</tr>
+<tr>
+<td><code>http_uri</code></td>
+<td>HTTP URI buffer</td>
+</tr>
+<tr>
+<td><code>http_method</code></td>
+<td>HTTP method buffer</td>
+</tr>
+<tr>
+<td><code>http_user_agent</code></td>
+<td>User-Agent buffer</td>
+</tr>
+<tr>
+<td><code>pcre</code></td>
+<td>Regex</td>
+</tr>
+<tr>
+<td><code>detection_filter</code></td>
+<td>Thresholding</td>
+</tr>
+<tr>
+<td><code>ja3.hash</code></td>
+<td>TLS client fingerprint</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="suricata-and-tls-detection">Suricata and TLS Detection</h2>
+<p>Encrypted payloads are unreadable, but TLS metadata can still be useful.</p>
+<p>Detection vectors:</p>
+<table>
+<thead>
+<tr>
+<th>Vector</th>
+<th>Suricata Keyword</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Certificate subject</td>
+<td><code>tls_cert_subject</code></td>
+</tr>
+<tr>
+<td>Certificate issuer</td>
+<td><code>tls_cert_issuer</code></td>
+</tr>
+<tr>
+<td>JA3 fingerprint</td>
+<td><code>ja3.hash</code></td>
+</tr>
+</tbody>
+</table>
+<p>JA3 example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a>alert<span class="w"> </span>tls<span class="w"> </span>any<span class="w"> </span>any<span class="w"> </span>-&gt;<span class="w"> </span>any<span class="w"> </span>any<span class="w"> </span><span class="o">(</span>msg:<span class="s2">&quot;Sliver C2 Implant&quot;</span><span class="p">;</span><span class="w"> </span>ja3.hash<span class="p">;</span><span class="w"> </span>content:<span class="s2">&quot;473cd7cb9faa642487833865d516e578&quot;</span><span class="p">;</span><span class="w"> </span>sid:1002<span class="p">;</span><span class="w"> </span>rev:1<span class="p">;</span><span class="o">)</span>
+</code></pre></div>
+<hr />
+<h2 id="suricata-file-extraction">Suricata File Extraction</h2>
+<p>Enable file storage in <code>suricata.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="nt">file-store</span><span class="p">:</span>
+<a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+</code></pre></div>
+<p>Example extraction rule:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a>alert<span class="w"> </span>http<span class="w"> </span>any<span class="w"> </span>any<span class="w"> </span>-&gt;<span class="w"> </span>any<span class="w"> </span>any<span class="w"> </span><span class="o">(</span>msg:<span class="s2">&quot;FILE store all&quot;</span><span class="p">;</span><span class="w"> </span>filestore<span class="p">;</span><span class="w"> </span>sid:2<span class="p">;</span><span class="w"> </span>rev:1<span class="p">;</span><span class="o">)</span>
+</code></pre></div>
+<p>Files are saved in the filestore directory, often named by SHA256 hash.</p>
+<p>Inspect files:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a>file<span class="w"> </span>extracted-file
+<a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>xxd<span class="w"> </span>extracted-file<span class="w"> </span><span class="p">|</span><span class="w"> </span>head
+</code></pre></div>
+<hr />
+<h2 id="zeek">Zeek</h2>
+<p>Zeek is a passive network traffic analyzer.</p>
+<p>Unlike Snort and Suricata, Zeek focuses less on signature alerts and more on rich transaction logs.</p>
+<p>It is excellent for:</p>
+<ul>
+<li>Network forensics</li>
+<li>Threat hunting</li>
+<li>Connection logging</li>
+<li>DNS analysis</li>
+<li>HTTP analysis</li>
+<li>TLS metadata</li>
+<li>File transfer tracking</li>
+<li>Lateral movement investigation</li>
+</ul>
+<hr />
+<h2 id="zeek-architecture">Zeek Architecture</h2>
+<p>Zeek has two major layers:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Event Engine</td>
+<td>Parses traffic and emits events</td>
+</tr>
+<tr>
+<td>Script Interpreter</td>
+<td>Applies logic to events</td>
+</tr>
+</tbody>
+</table>
+<p>The event engine is policy-neutral.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a>Zeek sees an HTTP request.
+<a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>It generates an http_request event.
+<a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a>A Zeek script decides what to log or alert on.
+</code></pre></div>
+<hr />
+<h2 id="zeek-logs">Zeek Logs</h2>
+<table>
+<thead>
+<tr>
+<th>Log</th>
+<th>Content</th>
+<th>Useful Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>conn.log</code></td>
+<td>Connections</td>
+<td><code>id.orig_h</code>, <code>id.resp_h</code>, <code>duration</code>, <code>orig_bytes</code>, <code>service</code></td>
+</tr>
+<tr>
+<td><code>dns.log</code></td>
+<td>DNS activity</td>
+<td><code>query</code>, <code>qtype</code>, <code>answers</code></td>
+</tr>
+<tr>
+<td><code>http.log</code></td>
+<td>HTTP transactions</td>
+<td><code>host</code>, <code>uri</code>, <code>user_agent</code>, <code>status_code</code>, <code>method</code></td>
+</tr>
+<tr>
+<td><code>files.log</code></td>
+<td>File transfers</td>
+<td><code>mime_type</code>, <code>md5</code>, <code>sha1</code>, <code>source</code></td>
+</tr>
+<tr>
+<td><code>ssl.log</code></td>
+<td>TLS metadata</td>
+<td><code>server_name</code>, <code>issuer</code>, <code>subject</code>, <code>ja3</code></td>
+</tr>
+<tr>
+<td><code>smb_files.log</code></td>
+<td>SMB file activity</td>
+<td><code>path</code>, <code>name</code>, <code>action</code></td>
+</tr>
+<tr>
+<td><code>dce_rpc.log</code></td>
+<td>RPC activity</td>
+<td>Service control and remote management</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="running-zeek-on-pcap">Running Zeek on PCAP</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a>zeek<span class="w"> </span>-C<span class="w"> </span>-r<span class="w"> </span>capture.pcap
+</code></pre></div>
+<p><code>-C</code> ignores checksum validation.</p>
+<hr />
+<h2 id="zeek-cut">zeek-cut</h2>
+<p><code>zeek-cut</code> extracts columns from Zeek logs.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a>cat<span class="w"> </span>conn.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>zeek-cut<span class="w"> </span>id.orig_h<span class="w"> </span>id.resp_h<span class="w"> </span>duration
+</code></pre></div>
+<p>Unique user agents:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a>cat<span class="w"> </span>http.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>zeek-cut<span class="w"> </span>user_agent<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-nr
+</code></pre></div>
+<p>Longest connections:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a>cat<span class="w"> </span>conn.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>zeek-cut<span class="w"> </span>id.orig_h<span class="w"> </span>id.resp_h<span class="w"> </span>duration<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-k<span class="w"> </span><span class="m">3</span><span class="w"> </span>-rn<span class="w"> </span><span class="p">|</span><span class="w"> </span>head
+</code></pre></div>
+<p>File transfers by MIME type:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a>cat<span class="w"> </span>files.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>zeek-cut<span class="w"> </span>mime_type<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c
+</code></pre></div>
+<hr />
+<h2 id="zeek-hunting-use-cases">Zeek Hunting Use Cases</h2>
+<h3 id="beaconing">Beaconing</h3>
+<p>Look for repeated connections to the same destination at regular intervals.</p>
+<p>Useful log:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a>conn.log
+</code></pre></div>
+<p>Fields:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a>id.orig_h
+<a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>id.resp_h
+<a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a>id.resp_p
+<a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a>duration
+<a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a>orig_bytes
+</code></pre></div>
+<hr />
+<h3 id="dns-exfiltration">DNS Exfiltration</h3>
+<p>Look for:</p>
+<ul>
+<li>Long random subdomains</li>
+<li>High query volume to one domain</li>
+<li>Repeated TXT queries</li>
+<li>High entropy names</li>
+</ul>
+<p>Useful command:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a>cat<span class="w"> </span>dns.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>zeek-cut<span class="w"> </span>query<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-nr
+</code></pre></div>
+<hr />
+<h3 id="tls-exfiltration">TLS Exfiltration</h3>
+<p>Find large outbound transfers:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a>cat<span class="w"> </span>conn.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>zeek-cut<span class="w"> </span>id.orig_h<span class="w"> </span>id.resp_h<span class="w"> </span>orig_bytes<span class="w"> </span><span class="p">|</span><span class="w"> </span>datamash<span class="w"> </span>-g<span class="w"> </span><span class="m">1</span>,2<span class="w"> </span>sum<span class="w"> </span><span class="m">3</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-k<span class="w"> </span><span class="m">3</span><span class="w"> </span>-rn
+</code></pre></div>
+<hr />
+<h3 id="psexec-lateral-movement">PsExec Lateral Movement</h3>
+<p>Useful logs:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a>smb_files.log
+<a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>dce_rpc.log
+</code></pre></div>
+<p>Indicators:</p>
+<ul>
+<li><code>PSEXESVC.exe</code> written to <code>ADMIN$</code></li>
+<li>Service Control Manager activity</li>
+<li>RPC calls over <code>IPC$</code></li>
+<li>Named pipe activity</li>
+</ul>
+<hr />
+<h2 id="snort-vs-suricata-vs-zeek">Snort vs Suricata vs Zeek</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Main Strength</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Snort</td>
+<td>Mature rule-based IDS/IPS</td>
+</tr>
+<tr>
+<td>Suricata</td>
+<td>High-performance IDS/IPS/NSM with JSON logs</td>
+</tr>
+<tr>
+<td>Zeek</td>
+<td>Rich network metadata and behavioral analysis</td>
+</tr>
+</tbody>
+</table>
+<p>Simple summary:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a>Snort/Suricata = alert on signatures
+<a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>Zeek = explain network behavior
+</code></pre></div>
+<hr />
+<h2 id="quick-reference">Quick Reference</h2>
+<table>
+<thead>
+<tr>
+<th>Goal</th>
+<th>Tool / Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Run Snort on PCAP</td>
+<td><code>snort -c snort.lua -r file.pcap</code></td>
+</tr>
+<tr>
+<td>Snort console payload alerts</td>
+<td><code>-A cmg</code></td>
+</tr>
+<tr>
+<td>Snort inline IPS</td>
+<td><code>-Q --daq afpacket</code></td>
+</tr>
+<tr>
+<td>Run Suricata on PCAP</td>
+<td><code>suricata -r file.pcap</code></td>
+</tr>
+<tr>
+<td>Suricata alert JSON</td>
+<td><code>eve.json</code></td>
+</tr>
+<tr>
+<td>Filter Suricata alerts</td>
+<td><code>jq 'select(.event_type=="alert")'</code></td>
+</tr>
+<tr>
+<td>Run Zeek on PCAP</td>
+<td><code>zeek -C -r file.pcap</code></td>
+</tr>
+<tr>
+<td>Extract Zeek fields</td>
+<td><code>zeek-cut</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="notes-to-remember">Notes to Remember</h2>
+<ul>
+<li>IDS alerts but does not block.</li>
+<li>IPS can block but must be tuned carefully.</li>
+<li>Snort and Suricata use rules.</li>
+<li>Suricata <code>eve.json</code> is excellent for SIEM ingestion.</li>
+<li>Zeek produces rich protocol logs instead of only alerts.</li>
+<li>Rule quality depends on precision, performance, and false-positive tuning.</li>
+<li>Test custom rules against PCAPs before deploying.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../splunk/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Splunk">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Splunk
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../yara-and-sigma/" class="md-footer__link md-footer__link--next" aria-label="Next: YARA and Sigma">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                YARA and Sigma
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Made with Material for MkDocs · Theme inspired by OWASP Cheat Sheet Series
+    </div>
+  
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.indexes", "navigation.top", "navigation.footer", "search.highlight", "search.suggest", "content.code.copy", "content.code.select", "content.tabs.link", "toc.follow"], "search": "../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
