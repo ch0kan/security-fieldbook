@@ -1,8 +1,30 @@
 # Security Fieldbook
 
-Welcome to my cybersecurity fieldbook — a practical collection of notes, labs, writeups, tools, and lessons learned while building hands-on security skills.
+---
 
-This site is organized around core cybersecurity areas: foundations, offensive security, defensive security, home labs, and practical writeups.
+## Executive Summary
+
+Welcome to my cybersecurity fieldbook — a practical portfolio of projects, write-ups, notes, cheatsheets, and lab investigations.
+
+I use this site to document hands-on cybersecurity work: what I built, what I tested, what I investigated, and what I learned. The goal is to show practical ability, clear thinking, and repeatable technical documentation.
+
+## Start Here
+
+| Section | Why It Matters |
+|---|---|
+| [Projects](projects/index.md) | Standalone cybersecurity projects with concrete deliverables |
+| [Writeups](writeups/index.md) | First-hand lab investigations and technical write-ups |
+| [Defensive Security](defensive/index.md) | Detection, monitoring, traffic analysis, and incident response notes |
+| [Offensive Security](offensive/index.md) | Reconnaissance, exploitation, methodology, and tooling notes |
+| [Cheatsheets](cheatsheets/index.md) | Fast operational references for commands, tools, and workflows |
+
+## Featured Projects
+
+| Project | Focus | Summary |
+|---|---|---|
+| [SSRF Request Mapper](projects/ssrf-request-mapper.md) | Offensive / Secure Coding | Built a local SSRF testing and mitigation project to understand what a vulnerable server can reach. |
+| [Windows Persistence Triage Reporter](projects/windows-persistence-triage-reporter.md) | Defensive / PowerShell | Built a PowerShell script that collects Windows persistence artifacts and generates a Markdown triage report. |
+| [CVE Patch Autopsy](projects/cve-patch-autopsy.md) | Research / Secure Coding | Analyzed a real path traversal CVE and recreated the bug class safely in a small Python application. |
 
 ## Focus Areas
 
@@ -11,19 +33,24 @@ This site is organized around core cybersecurity areas: foundations, offensive s
 - Penetration testing methodology
 - Reconnaissance and enumeration
 - Web application security
+- Windows endpoint triage
 - SOC, logging, and detection
 - Incident response and malware analysis
-- Hands-on home lab projects
+- Practical lab documentation
+
+## How This Site Is Organized
+
+| Section | Description |
+|---|---|
+| [Foundations](foundations/index.md) | Core networking, operating system, web, identity, and security fundamentals |
+| [Offensive Security](offensive/index.md) | Methodology, reconnaissance, exploitation, operations, and offensive tools |
+| [Defensive Security](defensive/index.md) | Monitoring, detection, traffic analysis, incident response, and security operations |
+| [Projects](projects/index.md) | Small standalone cybersecurity projects with showable outputs |
+| [Writeups](writeups/index.md) | Structured first-hand lab write-ups and investigations |
+| [Cheatsheets](cheatsheets/index.md) | Quick references for tools, commands, ports, queries, and workflows |
 
 ## Current Goal
 
-I am building this fieldbook as a public portfolio to document my learning process, organize my notes, and demonstrate practical cybersecurity knowledge.
+My current goal is to use this fieldbook as a public portfolio that demonstrates practical cybersecurity skill.
 
-## Sections
-
-- **Foundations** — core networking, operating system, web, and security fundamentals
-- **Offensive Security** — reconnaissance, exploitation, methodology, and tooling
-- **Defensive Security** — monitoring, detection, SIEM, traffic analysis, and incident response
-- **Labs** — home lab environments and practical security projects
-- **Writeups** — structured reports from practice environments and CTF-style challenges
-- **Cheatsheets** — quick references for tools and commands
+I want each section to show more than notes. The site should show how I approach technical problems, how I validate findings, how I document evidence, and how I improve my work over time.

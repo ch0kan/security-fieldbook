@@ -9,7 +9,6 @@
 [x] Cyber-Notes/THM/Basics/Packets & Frames.md -> merged into docs/foundations/networking/network-fundamentals.md
 [x] Cyber-Notes/HTB/Introduction to Networking/Introduction to Networks.md -> partially merged into docs/foundations/networking/network-fundamentals.md
 [x] Cyber-Notes/HTB/Introduction to Networking/Network Types.md -> partially merged into docs/foundations/networking/network-fundamentals.md
-[ ] Cyber-Notes/THM/Basics/Networking Essentials.md -> pending split into protocols.md and other pages
 
 
 
@@ -69,3 +68,84 @@
 
 
 
+[x] Cyber-Notes/THM/Basics/MITRE.md -> expanded into docs/defensive/frameworks/mitre-attack.md
+[x] Cyber-Notes/THM/Basics/Cyber Kill Chain.md -> expanded into docs/defensive/frameworks/cyber-kill-chain.md
+[x] Cyber-Notes/THM/Basics/Unified Kill Chain.md -> expanded into docs/defensive/frameworks/unified-kill-chain.md
+[x] Cyber-Notes/THM/Basics/Diamond Model.md -> expanded into docs/defensive/frameworks/diamond-model.md
+
+
+
+[x] Cyber-Notes/HTB/Intro to Network Traffic Analysis/Tcpdump.md -> expanded into docs/defensive/traffic-analysis/tcpdump.md
+[x] Cyber-Notes/THM/Basics/Tcpdump.md -> merged into docs/defensive/traffic-analysis/tcpdump.md
+[x] Cyber-Notes/HTB/Intro to Network Traffic Analysis/Wireshark.md -> expanded into docs/defensive/traffic-analysis/wireshark.md
+[x] Cyber-Notes/THM/SOC L1/Wireshark - Traffic Analysis.md -> merged into docs/defensive/traffic-analysis/wireshark.md
+[x] Cyber-Notes/THM/SOC L1/Network Traffic Analysis (Wireshark).md -> merged into docs/defensive/traffic-analysis/wireshark.md
+
+
+
+[x] Cyber-Notes/HTB/SOC/Windows Event Logging Basics.md -> expanded into docs/defensive/monitoring/windows-event-logging.md
+[x] Cyber-Notes/HTB/SOC/Understanding Log Sources & Investigating with Splunk.md -> split into docs/defensive/monitoring/log-sources-and-siem.md and docs/defensive/monitoring/splunk.md
+[x] Cyber-Notes/HTB/SOC/Detecting Windows Attacks with Splunk.md -> merged into docs/defensive/monitoring/splunk.md
+
+
+[x] Cyber-Notes/HTB/SOC/Working with IDS-IPS.md -> merged into docs/defensive/monitoring/snort.md and docs/defensive/monitoring/yara-and-sigma.md
+[x] Cyber-Notes/THM/SOC L1/Snort.md -> merged into docs/defensive/monitoring/snort.md
+[x] Cyber-Notes/HTB/SOC/YARA and SIGMA.md -> expanded into docs/defensive/monitoring/yara-and-sigma.md
+
+
+[x] Cyber-Notes/HTB/SOC/The Incident Handling Process.md -> merged into docs/defensive/incident-response/incident-handling-process.md
+[x] Cyber-Notes/THM/Dfensive Security/Incident Response.md -> merged into docs/defensive/incident-response/incident-handling-process.md
+[x] Cyber-Notes/HTB/SOC/Data Exfiltration Detection.md -> expanded into docs/defensive/incident-response/data-exfiltration-detection.md
+
+
+[x] Cyber-Notes/HTB/SOC/Introduction to Malware Analysis.md -> expanded into docs/defensive/incident-response/malware-analysis.md
+[x] Cyber-Notes/THM/Dfensive Security/Digital Forensics.md -> expanded into docs/defensive/incident-response/digital-forensics.md
+
+
+
+[x] Cyber-Notes/HTB/SOC/JavaScript Deobfuscation.md -> expanded into docs/defensive/threat-detection/javascript-deobfuscation.md
+[x] Cyber-Notes/THM/SOC L1/Web Security Monitoring.md -> expanded into docs/defensive/threat-detection/web-security-monitoring.md
+[x] Cyber-Notes/THM/SOC L1/Linux Security Monitoring.md -> expanded into docs/defensive/threat-detection/linux-security-monitoring.md
+
+
+[x] Cyber-Notes/THM/SOC L1/Malware Concepts.md -> expanded into docs/defensive/threat-detection/malware-concepts.md
+[skip] Cyber-Notes/THM/SOC L1/Threat Analysis Tools.md -> skipped because source note is empty
+[x] Cyber-Notes/THM/SOC L1/Windows Security Monitoring.md -> expanded into docs/defensive/threat-detection/windows-security-monitoring.md
+
+
+
+[x] Cyber-Notes/THM/Basics/Areas of Defensive Security.md -> expanded into docs/defensive/security-operations/defensive-security-overview.md
+[x] Cyber-Notes/THM/Dfensive Security/SOC Fundamentals.md -> expanded into docs/defensive/security-operations/soc-fundamentals.md
+[x] Cyber-Notes/THM/Security Solutions/Firewall Fundamentals.md -> expanded into docs/defensive/security-architecture/firewall-fundamentals.md
+
+
+
+[x] Cyber-Notes/THM/Basics/Active Directory.md -> expand into docs/foundations/identity/active-directory.md
+
+[x] Cyber-Notes/HTB/Introduction to Windows/Introduction to Windows.md -> split into:
+    docs/foundations/operating-systems/windows-fundamentals.md
+    docs/foundations/identity/windows-authentication-and-access.md
+
+[x] Cyber-Notes/HTB/Linux Fundamentals/Linux Structure + Workflow.md -> expand into docs/foundations/operating-systems/linux-fundamentals.md
+
+
+
+imported cmd + powershell
+
+[x] Cyber-Notes/HTB/Linux Fundamentals/Linux Structure + Workflow.md -> expanded into docs/foundations/operating-systems/linux/structure-and-workflow.md
+[x] Cyber-Notes/HTB/Linux Fundamentals/System Management.md -> expanded into docs/foundations/operating-systems/linux/system-management.md
+
+
+[x] Cyber-Notes/HTB/Introduction to Bash Scripting/Working Components.md -> merged into docs/foundations/operating-systems/linux/bash-scripting.md
+[x] Cyber-Notes/HTB/Introduction to Bash Scripting/Execution Flow.md -> merged into docs/foundations/operating-systems/linux/bash-scripting.md
+[x] Cyber-Notes/HTB/Introduction to Bash Scripting/Script Control.md -> merged into docs/foundations/operating-systems/linux/bash-scripting.md
+
+[x] Cyber-Notes/HTB/Footprinting/Host Based Enumeration.md -> expanded into docs/offensive/reconnaissance/footprinting.md
+
+[x] Cyber-Notes/HTB/Pentest in a Nutshell/Linux Target.md -> expanded into docs/offensive/exploitation/targets/linux.md
+
+
+[x] Cyber-Notes/HTB/Pentest in a Nutshell/Windows Target.md -> expanded into docs/offensive/exploitation/targets/windows.md
+
+[x] Cyber-Notes/HTB/Hacking WordPress/Enumeration.md -> merged into docs/offensive/exploitation/targets/wordpress.md
+[x] Cyber-Notes/HTB/Hacking WordPress/Exploitation.md -> merged into docs/offensive/exploitation/targets/wordpress.md

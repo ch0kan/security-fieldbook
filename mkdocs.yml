@@ -37,6 +37,11 @@ theme:
     text: Inter
     code: JetBrains Mono
 
+copyright: 'Made with Material for MkDocs · Theme inspired by OWASP Cheat Sheet Series'
+
+extra:
+  generator: false
+
 markdown_extensions:
   - admonition
   - attr_list
@@ -62,29 +67,39 @@ extra_css:
 nav:
   - Home: index.md
   - About: about.md
-  - Projects: projects.md
-  - Learning Path: learning-path.md
+  - Projects:
+      - Overview: projects/index.md
+      - SSRF Request Mapper: projects/ssrf-request-mapper.md
+      - Windows Persistence Triage Reporter: projects/windows-persistence-triage-reporter.md
+      - CVE Patch Autopsy: projects/cve-patch-autopsy.md
 
   - Foundations:
       - Overview: foundations/index.md
+
       - Networking:
           - Overview: foundations/networking/index.md
           - Network Fundamentals: foundations/networking/network-fundamentals.md
           - Protocols: foundations/networking/protocols.md
           - Subnetting: foundations/networking/subnetting.md
           - Cryptography: foundations/networking/cryptography.md
+
       - Operating Systems:
           - Overview: foundations/operating-systems/index.md
           - Linux:
-              - Overview: foundations/operating-systems/linux/index.md
               - Structure and Workflow: foundations/operating-systems/linux/structure-and-workflow.md
               - System Management: foundations/operating-systems/linux/system-management.md
               - Bash Scripting: foundations/operating-systems/linux/bash-scripting.md
+
           - Windows:
-              - Overview: foundations/operating-systems/windows/index.md
-              - Fundamentals: foundations/operating-systems/windows/fundamentals.md
               - Command Line: foundations/operating-systems/windows/command-line.md
-              - Active Directory: foundations/operating-systems/windows/active-directory.md
+              - PowerShell: foundations/operating-systems/windows/powershell.md
+              - Services, Processes, and WMI: foundations/operating-systems/windows/services-processes-and-wmi.md
+
+      - Identity and Access:
+          - Overview: foundations/identity/index.md
+          - Active Directory: foundations/identity/active-directory.md
+          - Windows Authentication and Access: foundations/identity/windows-authentication-and-access.md
+
       - Web:
           - Overview: foundations/web/index.md
           - How the Web Works: foundations/web/how-the-web-works.md
@@ -94,29 +109,39 @@ nav:
   - Offensive Security:
       - Overview: offensive/index.md
       - Methodology: offensive/methodology.md
+
       - Reconnaissance:
           - Overview: offensive/reconnaissance/index.md
           - Nmap: offensive/reconnaissance/nmap.md
           - Footprinting: offensive/reconnaissance/footprinting.md
           - Content Discovery: offensive/reconnaissance/content-discovery.md
+          - Web Reconnaissance: offensive/reconnaissance/web-reconnaissance.md
+
       - Exploitation:
           - Overview: offensive/exploitation/index.md
+
           - Web:
-              - Overview: offensive/exploitation/web/index.md
               - SQL Injection: offensive/exploitation/web/sql-injection.md
               - Path Traversal: offensive/exploitation/web/path-traversal.md
               - File Upload: offensive/exploitation/web/file-upload.md
               - SSRF: offensive/exploitation/web/ssrf.md
               - Access Control: offensive/exploitation/web/access-control.md
               - Front-End Vulnerabilities: offensive/exploitation/web/front-end-vulnerabilities.md
+
           - Targets:
-              - Overview: offensive/exploitation/targets/index.md
               - Linux: offensive/exploitation/targets/linux.md
               - Windows: offensive/exploitation/targets/windows.md
               - WordPress: offensive/exploitation/targets/wordpress.md
+
+      - Operations:
+          - Overview: offensive/operations/index.md
+          - File Transfers: offensive/operations/file-transfers.md
+          - Pivoting and Tunneling: offensive/operations/pivoting-and-tunneling.md
+
       - Tools:
           - Overview: offensive/tools/index.md
           - Burp Suite: offensive/tools/burp-suite.md
+          - Web Proxies: offensive/tools/web-proxies.md
           - Metasploit: offensive/tools/metasploit.md
           - Shells: offensive/tools/shells.md
           - Hydra: offensive/tools/hydra.md
@@ -125,62 +150,101 @@ nav:
 
   - Defensive Security:
       - Overview: defensive/index.md
+
       - Frameworks:
           - Overview: defensive/frameworks/index.md
           - MITRE ATT&CK: defensive/frameworks/mitre-attack.md
           - Cyber Kill Chain: defensive/frameworks/cyber-kill-chain.md
           - Unified Kill Chain: defensive/frameworks/unified-kill-chain.md
           - Diamond Model: defensive/frameworks/diamond-model.md
+
       - Monitoring:
           - Overview: defensive/monitoring/index.md
           - Windows Event Logging: defensive/monitoring/windows-event-logging.md
           - Log Sources: defensive/monitoring/log-sources.md
-          - SIEM Fundamentals: defensive/monitoring/siem-fundamentals.md
           - Splunk: defensive/monitoring/splunk.md
-          - Snort: defensive/monitoring/snort.md
+          - IDS / IPS: defensive/monitoring/snort.md
           - YARA and Sigma: defensive/monitoring/yara-and-sigma.md
+
       - Traffic Analysis:
           - Overview: defensive/traffic-analysis/index.md
           - Wireshark: defensive/traffic-analysis/wireshark.md
           - Tcpdump: defensive/traffic-analysis/tcpdump.md
+
       - Threat Detection:
           - Overview: defensive/threat-detection/index.md
           - Windows Attacks and Defense: defensive/threat-detection/windows-attacks-and-defense.md
           - Windows Security Monitoring: defensive/threat-detection/windows-security-monitoring.md
           - Linux Security Monitoring: defensive/threat-detection/linux-security-monitoring.md
           - Web Security Monitoring: defensive/threat-detection/web-security-monitoring.md
+          - File Transfer Detection: defensive/threat-detection/file-transfer-detection.md
+          - Malware Concepts: defensive/threat-detection/malware-concepts.md
           - Malware Analysis: defensive/threat-detection/malware-analysis.md
           - JavaScript Deobfuscation: defensive/threat-detection/javascript-deobfuscation.md
+
       - Incident Response:
           - Overview: defensive/incident-response/index.md
-          - Incident Handling Process: defensive/incident-response/incident-handling-process.md
+          - Incident Response Process: defensive/incident-response/incident-handling-process.md
           - Digital Forensics: defensive/incident-response/digital-forensics.md
           - Data Exfiltration Detection: defensive/incident-response/data-exfiltration-detection.md
-      - Security Solutions:
-          - Overview: defensive/security-solutions/index.md
-          - Firewall Fundamentals: defensive/security-solutions/firewall-fundamentals.md
-          - IDS/IPS: defensive/security-solutions/ids-ips.md
 
-  - Labs:
-      - Overview: labs/index.md
-      - Home Lab: labs/home-lab/index.md
-      - Active Directory Lab: labs/active-directory-lab/index.md
-      - Web App Lab: labs/web-app-lab/index.md
-      - SOC Lab: labs/soc-lab/index.md
+      - Security Operations:
+          - Defensive Security Overview: defensive/security-operations/defensive-security-overview.md
+          - SOC Fundamentals: defensive/security-operations/soc-fundamentals.md
+
+      - Security Architecture:
+          - Firewall Fundamentals: defensive/security-architecture/firewall-fundamentals.md
+
+      - Security Solutions:
+          - IDS/IPS: defensive/security-solutions/ids-ips.md
 
   - Writeups:
       - Overview: writeups/index.md
-      - HTB: writeups/htb/index.md
-      - THM: writeups/thm/index.md
-      - CTF: writeups/ctf/index.md
-      - Template: writeups/template.md
+
+      - Home Lab:
+          - Overview: writeups/home-lab/index.md
+          - Lab Architecture: writeups/home-lab/lab-architecture.md
+          - Windows Live Triage Lab: writeups/home-lab/windows-live-triage-lab.md
+          - Persistence Investigation Lab: writeups/home-lab/persistence-investigation-lab.md
+          - Network Traffic Investigation Lab: writeups/home-lab/network-traffic-investigation-lab.md
+          - Password Security Lab: writeups/home-lab/password-security-lab.md
+          - Web Attack Simulation Lab: writeups/home-lab/web-attack-simulation-lab.md
+          - Lessons Learned: writeups/home-lab/lessons-learned.md
 
   - Cheatsheets:
       - Overview: cheatsheets/index.md
-      - Nmap: cheatsheets/nmap.md
-      - Burp Suite: cheatsheets/burp-suite.md
-      - Metasploit: cheatsheets/metasploit.md
-      - Hydra: cheatsheets/hydra.md
-      - SQLMap: cheatsheets/sqlmap.md
-      - Gobuster: cheatsheets/gobuster.md
-      - Shells: cheatsheets/shells.md
+
+      - Core:
+          - Common Ports: cheatsheets/core/common-ports.md
+          - Networking: cheatsheets/core/networking.md
+          - Encoding and Hashing: cheatsheets/core/encoding-and-hashing.md
+
+      - Operating Systems:
+          - Linux Commands: cheatsheets/operating-systems/linux-commands.md
+          - Windows Commands: cheatsheets/operating-systems/windows-commands.md
+          - PowerShell: cheatsheets/operating-systems/powershell.md
+
+      - Reconnaissance:
+          - Nmap: cheatsheets/reconnaissance/nmap.md
+          - DNS and Subdomains: cheatsheets/reconnaissance/dns-and-subdomains.md
+          - OSINT: cheatsheets/reconnaissance/osint.md
+
+      - Web:
+          - Burp Suite: cheatsheets/web/burp-suite.md
+          - Web Requests: cheatsheets/web/web-requests.md
+          - SQLMap: cheatsheets/web/sqlmap.md
+
+      - Exploitation:
+          - Metasploit: cheatsheets/exploitation/metasploit.md
+          - Shells: cheatsheets/exploitation/shells.md
+          - File Transfers: cheatsheets/exploitation/file-transfers.md
+          - Pivoting and Tunneling: cheatsheets/exploitation/pivoting-and-tunneling.md
+
+      - Credentials:
+          - Hydra: cheatsheets/credentials/hydra.md
+          - Password Cracking: cheatsheets/credentials/password-cracking.md
+
+      - Defensive:
+          - Log Hunting: cheatsheets/defensive/log-hunting.md
+          - Splunk Queries: cheatsheets/defensive/splunk-queries.md
+          - Detection Quick Reference: cheatsheets/defensive/detection-quick-reference.md

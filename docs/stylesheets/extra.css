@@ -614,3 +614,331 @@
   color: #4a3420;
   border: 1px solid #d2b98f;
 }
+
+/* Remove the sticky header shadow */
+.md-header,
+.md-header--shadow,
+.md-tabs {
+  box-shadow: none !important;
+}
+
+/* Optional: keep a clean subtle divider instead */
+.md-header,
+.md-tabs {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+/* Remove horizontal divider under page titles */
+.md-typeset h1 {
+  border-bottom: none !important;
+}
+
+/* Remove any theme-added underline/divider after h1 */
+.md-typeset h1::after {
+  display: none !important;
+  content: none !important;
+}
+
+
+
+
+/* Remove the dark sticky shadow/background in the LEFT sidebar */
+.md-sidebar--primary .md-nav__title,
+.md-sidebar--primary .md-nav__title[for="__drawer"] {
+  background: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* Remove any shadow/overlay from the primary nav container */
+.md-sidebar--primary .md-nav,
+.md-sidebar--primary .md-nav__list,
+.md-sidebar--primary .md-sidebar__scrollwrap,
+.md-sidebar--primary .md-sidebar__inner {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* In some Material versions the first active block gets its own shadow */
+.md-sidebar--primary .md-nav__item--active > .md-nav__link,
+.md-sidebar--primary .md-nav__link {
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+
+/* =========================
+   Clean left sidebar
+   ========================= */
+
+/* Hide Material's duplicated nested nav titles */
+.md-sidebar--primary .md-nav__title {
+  display: none !important;
+}
+
+/* Keep sidebar links clean */
+.md-sidebar--primary .md-nav__link {
+  background: transparent !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Remove weird shadows/overlays */
+.md-sidebar--primary,
+.md-sidebar--primary .md-sidebar__scrollwrap,
+.md-sidebar--primary .md-sidebar__inner,
+.md-sidebar--primary .md-nav,
+.md-sidebar--primary .md-nav__list,
+.md-sidebar--primary .md-nav__item {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Clean active item */
+.md-sidebar--primary .md-nav__link--active {
+  color: #f1cd7a !important;
+  font-weight: 700 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Normal sidebar spacing */
+.md-sidebar--primary .md-nav__link {
+  margin-top: 0.32rem !important;
+  line-height: 1.35 !important;
+}
+
+/* Section labels like Core, Web, Defensive */
+.md-sidebar--primary .md-nav__item--section > .md-nav__link {
+  color: #d6c7ad !important;
+  font-weight: 700 !important;
+  margin-top: 1.05rem !important;
+}
+
+
+/* =========================
+   Light mode code block fixes
+   ========================= */
+
+[data-md-color-scheme="default"] .md-typeset .highlight {
+  background-color: #f7ead5 !important;
+  border: 1px solid #d8bd8d !important;
+  border-radius: 8px !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset pre > code {
+  background-color: #f7ead5 !important;
+  color: #2b2118 !important;
+  border: 1px solid #d8bd8d !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset code {
+  background-color: #ead8b8 !important;
+  color: #4a2f14 !important;
+  border-color: #d0ad73 !important;
+}
+
+/* Light mode code copy button */
+[data-md-color-scheme="default"] .md-clipboard {
+  color: #5a4226 !important;
+  background-color: #ead8b8 !important;
+  border-left: 1px solid #d0ad73 !important;
+}
+
+[data-md-color-scheme="default"] .md-clipboard:hover {
+  color: #9d6816 !important;
+}
+
+
+/* =========================
+   Light mode search visibility
+   ========================= */
+
+[data-md-color-scheme="default"] .md-search__form {
+  background-color: #fff8ed !important;
+  border: 1px solid #b99255 !important;
+}
+
+[data-md-color-scheme="default"] .md-search__input {
+  color: #241b14 !important;
+}
+
+[data-md-color-scheme="default"] .md-search__input::placeholder {
+  color: #6f5638 !important;
+  opacity: 1 !important;
+}
+
+/* Magnifying glass icon */
+[data-md-color-scheme="default"] .md-search__icon,
+[data-md-color-scheme="default"] .md-search__icon svg,
+[data-md-color-scheme="default"] .md-search__form .md-icon svg {
+  color: #4a3420 !important;
+  fill: #4a3420 !important;
+  opacity: 1 !important;
+}
+
+/* Search focused state */
+[data-md-color-scheme="default"] .md-search__form:hover,
+[data-md-color-scheme="default"] .md-search__form:focus-within {
+  border-color: #9d6816 !important;
+  box-shadow: 0 0 0 2px rgba(157, 104, 22, 0.18) !important;
+}
+
+
+/* Stronger light mode code blocks */
+[data-md-color-scheme="default"] .md-typeset .highlight {
+  background-color: #ead8b8 !important;
+  border: 1px solid #c69c5d !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset .highlight pre,
+[data-md-color-scheme="default"] .md-typeset pre {
+  background-color: #ead8b8 !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset pre > code {
+  background-color: #ead8b8 !important;
+  color: #241b14 !important;
+  border: none !important;
+}
+
+/* Make copy button visible in light mode */
+[data-md-color-scheme="default"] .md-clipboard {
+  color: #5a3412 !important;
+  background-color: #ddc292 !important;
+  border-left: 1px solid #c69c5d !important;
+  opacity: 1 !important;
+}
+
+[data-md-color-scheme="default"] .md-clipboard::before {
+  background-color: #5a3412 !important;
+}
+
+[data-md-color-scheme="default"] .md-clipboard:hover {
+  color: #8a520e !important;
+  background-color: #d4b77f !important;
+}
+
+
+
+/* =========================
+   Final light mode code block tuning
+   ========================= */
+
+[data-md-color-scheme="default"] .md-typeset .highlight {
+  background-color: #ead8b8 !important;
+  border: 1px solid #b98a45 !important;
+  border-radius: 7px !important;
+  margin: 0.75rem 0 1rem !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset .highlight pre,
+[data-md-color-scheme="default"] .md-typeset pre {
+  background-color: #ead8b8 !important;
+  margin: 0 !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset pre > code {
+  background-color: #ead8b8 !important;
+  color: #1f160f !important;
+  border: none !important;
+  font-size: 0.7rem !important;
+  line-height: 1.45 !important;
+  padding: 0.85rem 1rem !important;
+}
+
+/* Inline code in light mode */
+[data-md-color-scheme="default"] .md-typeset code:not(pre code) {
+  background-color: #dec395 !important;
+  color: #3a220c !important;
+  border: 1px solid #bc8d49 !important;
+  border-radius: 4px !important;
+}
+
+/* Copy button in light mode */
+[data-md-color-scheme="default"] .md-clipboard {
+  color: #4a2c10 !important;
+  background-color: #d8b77e !important;
+  border-left: 1px solid #b98a45 !important;
+  opacity: 1 !important;
+}
+
+[data-md-color-scheme="default"] .md-clipboard::before {
+  background-color: #4a2c10 !important;
+}
+
+[data-md-color-scheme="default"] .md-clipboard:hover {
+  color: #241506 !important;
+  background-color: #cfa866 !important;
+}
+
+
+/* Fix light mode code block corners */
+[data-md-color-scheme="default"] .md-typeset .highlight {
+  overflow: hidden !important;
+  border-radius: 8px !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset .highlight pre,
+[data-md-color-scheme="default"] .md-typeset .highlight code {
+  border-radius: 0 !important;
+}
+
+/* Keep copy button aligned with rounded parent */
+[data-md-color-scheme="default"] .md-typeset .highlight .md-clipboard {
+  border-radius: 0 8px 0 0 !important;
+}
+
+/* Match light mode code block sizing to dark mode */
+[data-md-color-scheme="default"] .md-typeset .highlight {
+  margin: 0.75rem 0 1rem !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset .highlight pre {
+  margin: 0 !important;
+}
+
+[data-md-color-scheme="default"] .md-typeset pre > code {
+  font-size: 0.68rem !important;
+  line-height: 1.5 !important;
+  padding: 0.75rem !important;
+}
+
+
+/* =========================
+   Final readability polish
+   ========================= */
+
+.md-content {
+  max-width: 960px;
+}
+
+.md-typeset {
+  font-size: 0.76rem;
+  line-height: 1.68;
+}
+
+.md-typeset p,
+.md-typeset li {
+  line-height: 1.68;
+}
+
+.md-nav__link {
+  line-height: 1.45 !important;
+  margin-top: 0.38rem !important;
+}
+
+.md-typeset .admonition,
+.md-typeset details {
+  line-height: 1.6;
+}
+
+
+/* Disable visible search highlights */
+.md-typeset mark {
+  background: transparent !important;
+  color: inherit !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
