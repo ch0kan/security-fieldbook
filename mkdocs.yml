@@ -1,6 +1,7 @@
 site_name: Security Fieldbook
 site_description: A practical cybersecurity fieldbook with pentesting notes, lab writeups, tools, and hands-on learning.
 site_author: Antonie Grigore
+site_url: https://ch0kan.github.io/security-fieldbook/
 
 theme:
   name: material
